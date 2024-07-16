@@ -1,5 +1,6 @@
 package deus.stanleylib;
 
+import deus.stanleylib.core.PlayerTemperatureObserver;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,8 +9,10 @@ import turniplabs.halplibe.util.RecipeEntrypoint;
 
 
 public class main implements ModInitializer, GameStartEntrypoint, RecipeEntrypoint {
-    public static final String MOD_ID = "StanleyLib";
+    public static final String MOD_ID = "stanleylib";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+	static final int TICKS_PER_SECOND = 20;
 
 	/**
 	 * The minimum temperature a player can have.
@@ -25,6 +28,16 @@ public class main implements ModInitializer, GameStartEntrypoint, RecipeEntrypoi
 	 * The maximum temperature a player can have.
 	 */
 	public static final double DEFAULT_TEMPERATURE = 36.5;
+
+	/**
+	 * The quenty of time (in s) to update player temperature
+	 */
+	public static final int NEEDED_TIME_TO_UPDATE = 50;
+
+	public static int secondsToTicks(int seconds) {
+
+		return seconds * TICKS_PER_SECOND;
+	}
 
 
 	@Override

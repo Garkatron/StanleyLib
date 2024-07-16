@@ -1,4 +1,4 @@
-package deus.stanleylib.interfaces;
+package deus.stanleylib.interfaces.mixin;
 
 public interface IStanleyPlayerEntity {
 	/**

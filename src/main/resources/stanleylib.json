@@ -4,6 +4,7 @@
     "package": "deus.stanleylib.mixin",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
+      "MixinPlayerEntity"
     ],
     "client": [
     ],

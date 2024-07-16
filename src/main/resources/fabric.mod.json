@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
+  "id": "StanleyLib",
   "version": "${version}",
 
   "name": "Example Mod",
   "description": "This mod aims to help new BTA modders.",
   "authors": [
-    "Turnip Labs"
+    "Stanley Lib"
   ],
   "contact": {
     "homepage": "",
@@ -19,20 +19,20 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-			"turniplabs.examplemod.ExampleMod"
+			"deus.stanleylib.main"
     ],
 		"beforeGameStart": [
-			"turniplabs.examplemod.ExampleMod"
+			"deus.stanleylib.main"
 		],
 		"afterGameStart": [
-			"turniplabs.examplemod.ExampleMod"
+			"deus.stanleylib.main"
 		],
 		"recipesReady": [
-			"turniplabs.examplemod.ExampleMod"
+			"deus.stanleylib.main"
 		]
 	},
   "mixins": [
-      "examplemod.mixins.json"
+		"stanleylib.json"
   ],
 
   "depends": {

@@ -1,5 +1,7 @@
 package deus.stanleylib.interfaces.mixin;
 
+import deus.stanleylib.core.enums.PlayerTemperatureState;
+
 public interface IStanleyPlayerEntity {
 	/**
 	 * Gets the current temperature of the player.
@@ -77,5 +79,11 @@ public interface IStanleyPlayerEntity {
 	 **/
 	void stanley_lib$updateTemperature();
 
+	/**
+	 * Sets the player's temperature state to a specific value.
+	 *
+	 * @param state The new temperature value.
+	 **/
+	void stanley_lib$setTemperatureState(PlayerTemperatureState state);
 
 }

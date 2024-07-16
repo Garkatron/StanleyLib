@@ -1,5 +1,6 @@
 package deus.stanleylib.mixin;
 
+import deus.stanleylib.config.TemperatureConfig;
 import deus.stanleylib.interfaces.ISubject;
 import deus.stanleylib.core.PlayerTemperatureObserver;
 import deus.stanleylib.core.enums.CustomDamageTypes;
@@ -7,9 +8,11 @@ import deus.stanleylib.core.enums.PlayerTemperatureState;
 import deus.stanleylib.interfaces.mixin.IPlayerEntity;
 import deus.stanleylib.interfaces.mixin.IStanleyPlayerEntity;
 import net.minecraft.core.block.Block;
+import net.minecraft.core.block.material.Material;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.util.helper.DamageType;
 import net.minecraft.core.world.World;
+import net.minecraft.core.world.biome.Biome;
 import net.minecraft.core.world.weather.Weather;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -92,11 +95,15 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 
 	@Override
 	public void stanley_lib$killByFreezing() {
+		EntityPlayer player = (EntityPlayer) (Object) this;
+		player.sendTranslatedChatMessage("killed_by.freezing");
 		this.killPlayer();
 	}
 
 	@Override
 	public void stanley_lib$killByOverheating() {
+		EntityPlayer player = (EntityPlayer) (Object) this;
+		player.sendTranslatedChatMessage("killed_by.overheating");
 		this.killPlayer();
 	}
 
@@ -104,7 +111,6 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 	public Block stanley_lib$getBlockUnderPlayer() {
 		EntityPlayer player = (EntityPlayer) (Object) this;
 		return player.world.getBlock((int) player.x, (int) player.y, (int) player.z);
-
 	}
 
 	@Override
@@ -134,7 +140,7 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 		}
 	}
 
-	public void stanley_lib$setState(PlayerTemperatureState state) {
+	public void stanley_lib$setTemperatureState(PlayerTemperatureState state) {
 		this.temperature_state = state;
 		stanley_lib$notifyObservers();
 	}
@@ -148,46 +154,75 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 	public void stanley_lib$updateTemperature() {
 		Block under_player_block = this.stanley_lib$getBlockUnderPlayer();
 		EntityPlayer player = (EntityPlayer) (Object) this;
-
-		System.out.println("TEMPERATURE: "+current_temperature);
+		Biome current_biome_at_block = player.world.getBlockBiome((int) player.x, (int) player.y, (int) player.z);
 
 		Weather current_weather = player.world.getCurrentWeather();
+		TemperatureConfig temperatureConfig = new TemperatureConfig();
 
-		switch ((int) current_temperature) {
-
-			case 40: {
-				stanley_lib$setState(PlayerTemperatureState.OVERHEATING);
-				break;
-			}
-			case 20: {
-				stanley_lib$setState(PlayerTemperatureState.HOT);
-				break;
-			}
-			case (int) DEFAULT_TEMPERATURE: {
-				stanley_lib$setState(PlayerTemperatureState.NORMAL);
-				break;
-			}
-			case -20: {
-				stanley_lib$setState(PlayerTemperatureState.COLD);
-				break;
-			}
-			case -40: {
-				stanley_lib$setState(PlayerTemperatureState.FREEZING);
-				break;
-			}
+		// Determine player temperature state based on current temperature
+		if (current_temperature >= 40) {
+			stanley_lib$setTemperatureState(PlayerTemperatureState.OVERHEATING);
+			stanley_lib$killByOverheating();
+		} else if (current_temperature >= 20) {
+			stanley_lib$setTemperatureState(PlayerTemperatureState.HOT);
+		} else if (current_temperature == DEFAULT_TEMPERATURE) {
+			stanley_lib$setTemperatureState(PlayerTemperatureState.NORMAL);
+		} else if (current_temperature <= -20 && current_temperature > -40) {
+			stanley_lib$setTemperatureState(PlayerTemperatureState.COLD);
+		} else if (current_temperature <= -40) {
+			stanley_lib$setTemperatureState(PlayerTemperatureState.FREEZING);
+			stanley_lib$killByFreezing();
 		}
 
+		// Adjust temperature based on weather and block under player
 		if (ticks_remaining >= secondsToTicks(NEEDED_TIME_TO_UPDATE)) {
 			ticks_remaining = 0;
-			if (current_weather.equals(Weather.overworldRain)) {
-				stanley_lib$decreasePlayerTemperature(10);
-			} else if (current_weather.equals(Weather.overworldSnow)) {
-				stanley_lib$decreasePlayerTemperature(20);
+
+			// Adjust temperature based on current weather
+			int weatherAdjustment = temperatureConfig.getWeatherTemperatureAdjustment(current_weather);
+			if (weatherAdjustment != 0) {
+				if (weatherAdjustment > 0) {
+					stanley_lib$increasePlayerTemperature(weatherAdjustment);
+				} else {
+					stanley_lib$decreasePlayerTemperature(-weatherAdjustment);
+				}
+			}
+
+			if (under_player_block==null){
+				return;
+			}
+
+			// Adjust temperature based on block material
+			int blockAdjustment = temperatureConfig.getBlockTemperatureAdjustment(under_player_block.blockMaterial);
+			if (blockAdjustment != 0) {
+				if (blockAdjustment > 0) {
+					stanley_lib$increasePlayerTemperature(blockAdjustment);
+				} else {
+					stanley_lib$decreasePlayerTemperature(-blockAdjustment);
+				}
+			}
+
+			// Special handling for water block material with different weather conditions
+			if (under_player_block.blockMaterial == Material.water) {
+				int waterWeatherAdjustment = temperatureConfig.getWaterWeatherAdjustment(current_weather);
+				if (waterWeatherAdjustment != 0) {
+					if (waterWeatherAdjustment > 0) {
+						stanley_lib$increasePlayerTemperature(waterWeatherAdjustment);
+					} else {
+						stanley_lib$decreasePlayerTemperature(-waterWeatherAdjustment);
+					}
+				} else {
+					if (blockAdjustment > 0) {
+						stanley_lib$increasePlayerTemperature(blockAdjustment);
+					} else {
+						stanley_lib$decreasePlayerTemperature(-blockAdjustment);
+					}
+				}
 			}
 		}
 
 		ticks_remaining++;
-
 	}
+
 
 }

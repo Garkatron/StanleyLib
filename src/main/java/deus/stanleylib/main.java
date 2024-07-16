@@ -1,5 +1,6 @@
 package deus.stanleylib;
 
+import deus.stanleylib.config.ModConfig;
 import deus.stanleylib.core.PlayerTemperatureObserver;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
@@ -10,7 +11,8 @@ import turniplabs.halplibe.util.RecipeEntrypoint;
 
 public class main implements ModInitializer, GameStartEntrypoint, RecipeEntrypoint {
     public static final String MOD_ID = "stanleylib";
-    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	public static final ModConfig MOD_CONFIG = new ModConfig();
 
 	static final int TICKS_PER_SECOND = 20;
 
@@ -32,11 +34,12 @@ public class main implements ModInitializer, GameStartEntrypoint, RecipeEntrypoi
 	/**
 	 * The quenty of time (in s) to update player temperature
 	 */
-	public static final int NEEDED_TIME_TO_UPDATE = 50;
+	public static final int NEEDED_TIME_TO_UPDATE = 10;
 
 	public static int secondsToTicks(int seconds) {
 
 		return seconds * TICKS_PER_SECOND;
+
 	}
 
 

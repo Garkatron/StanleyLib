@@ -3,10 +3,10 @@
   "id": "stanleylib",
   "version": "${version}",
 
-  "name": "Example Mod",
+  "name": "stanleylib",
   "description": "This mod aims to help new BTA modders.",
   "authors": [
-    "Stanley Lib"
+    "@Garkatron"
   ],
   "contact": {
     "homepage": "",
@@ -32,13 +32,13 @@
 		]
 	},
   "mixins": [
-		"stanleylib.json"
+		"stanleylib.mixins.json"
   ],
 
-  "depends": {
-		"minecraft": "~7.1",
-    "fabricloader": ">=0.15.5"
-  },
-  "suggests": {
-  }
+	"depends": {
+		"fabricloader": ">=0.13.3",
+		"halplibe": ">=4.0.5"
+	},
+	"suggests": {
+	}
 }

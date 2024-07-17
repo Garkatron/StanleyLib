@@ -52,8 +52,6 @@ public class TemperatureManager {
 		Weather current_weather = player.world.getCurrentWeather();
 		TemperatureConfig temperatureConfig = new TemperatureConfig();
 
-
-
 		double current_temperature = custom_player.stanley_lib$getPlayerTemperature();
 
 		if (current_temperature >= 60) {

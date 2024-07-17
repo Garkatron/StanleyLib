@@ -34,7 +34,7 @@ public class main implements ModInitializer, GameStartEntrypoint, RecipeEntrypoi
 	/**
 	 * The quenty of time (in s) to update player temperature
 	 */
-	public static final int NEEDED_TIME_TO_UPDATE = 10;
+	public static final int NEEDED_TIME_TO_UPDATE = 1;
 
 	public static int secondsToTicks(int seconds) {
 

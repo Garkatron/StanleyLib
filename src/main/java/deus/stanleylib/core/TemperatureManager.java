@@ -41,20 +41,22 @@ public class TemperatureManager {
 	}
 
 	public void update() {
-		IPlayerEntity iplayer = (IPlayerEntity)custom_player;
+		IPlayerEntity iplayer = (IPlayerEntity) custom_player;
 
 		Block under_player_block = iplayer.stanley_lib$getBlockUnderPlayer();
 		EntityPlayer player = (EntityPlayer) (Object) this.custom_player;
+
 		Biome current_biome_at_block = player.world.getBlockBiome((int) player.x, (int) player.y, (int) player.z);
+
 		Season current_season = player.world.seasonManager.getCurrentSeason();
 		boolean[] leather_armors = iplayer.hasLeatherArmor(player);
 
 		Weather current_weather = player.world.getCurrentWeather();
 		TemperatureConfig temperatureConfig = new TemperatureConfig();
 
-		double current_temperature = custom_player.stanley_lib$getPlayerTemperature();
+		BigDecimal current_temperature = BigDecimal.valueOf(custom_player.stanley_lib$getPlayerTemperature());
 
-		if (current_temperature >= 60) {
+		if (current_temperature.compareTo(BigDecimal.valueOf(60)) >= 0) {
 			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.OVERHEATING);
 			if (!sent_messages[0])
 				player.sendMessage("You are overheating! Current temperature: " + current_temperature);
@@ -65,7 +67,7 @@ public class TemperatureManager {
 			sent_messages[3] = true;
 
 			custom_player.stanley_lib$killByOverheating();
-		} else if (current_temperature >= 40) {
+		} else if (current_temperature.compareTo(BigDecimal.valueOf(40)) >= 0) {
 			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.HOT);
 			if (!sent_messages[1])
 				player.sendMessage("You are hot. Current temperature: " + current_temperature);
@@ -75,7 +77,7 @@ public class TemperatureManager {
 			sent_messages[2] = true;
 			sent_messages[3] = true;
 
-		} else if (current_temperature == DEFAULT_TEMPERATURE) {
+		} else if (current_temperature.compareTo(BigDecimal.valueOf(DEFAULT_TEMPERATURE)) == 0) {
 			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.NORMAL);
 
 			sent_messages[0] = true;
@@ -84,7 +86,7 @@ public class TemperatureManager {
 			sent_messages[2] = true;
 
 			// player.sendMessage("Your temperature is normal. Current temperature: " + current_temperature);
-		} else if (current_temperature <= 15 && current_temperature > -30) {
+		} else if (current_temperature.compareTo(BigDecimal.valueOf(15)) <= 0 && current_temperature.compareTo(BigDecimal.valueOf(-30)) > 0) {
 			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.COLD);
 			if (!sent_messages[2])
 				player.sendMessage("You are cold. Current temperature: " + current_temperature);
@@ -94,7 +96,7 @@ public class TemperatureManager {
 			sent_messages[1] = true;
 			sent_messages[3] = true;
 
-		} else if (current_temperature <= -40) {
+		} else if (current_temperature.compareTo(BigDecimal.valueOf(-40)) <= 0) {
 			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.FREEZING);
 			if (!sent_messages[3])
 				player.sendMessage("You are freezing! Current temperature: " + current_temperature);
@@ -108,61 +110,65 @@ public class TemperatureManager {
 		}
 
 		// Calculate total temperature adjustment
-		float totalAdjustment = 0.0F;
+		BigDecimal totalAdjustment = BigDecimal.ZERO;
 
 		if (ticks_remaining >= secondsToTicks(NEEDED_TIME_TO_UPDATE)) {
 			ticks_remaining = 0;
 
 			// Adjust temperature based on current weather
 			if (MOD_CONFIG.getBool("weather_affects_temperature")) {
-				float weatherAdjustment = temperatureConfig.getWeatherTemperatureAdjustment(current_weather);
-				totalAdjustment += weatherAdjustment;
+				BigDecimal weatherAdjustment = BigDecimal.valueOf(temperatureConfig.getWeatherTemperatureAdjustment(current_weather));
+				totalAdjustment = totalAdjustment.add(weatherAdjustment);
 			}
 
 			// Adjust temperature based on the block player is standing on
 			if (MOD_CONFIG.getBool("player_over_block_affects_temperature")) {
 				if (under_player_block != null) {
 					// Adjust temperature based on block material
-					float blockAdjustment = temperatureConfig.getBlockTemperatureAdjustment(under_player_block.blockMaterial);
-					totalAdjustment += blockAdjustment;
-
+					BigDecimal blockAdjustment = BigDecimal.valueOf(temperatureConfig.getBlockTemperatureAdjustment(under_player_block.blockMaterial));
+					totalAdjustment = totalAdjustment.add(blockAdjustment);
 				}
 			}
 
-			if (current_season!=null || current_season instanceof SeasonNull) {
-				float seasonAdjustment = temperatureConfig.getSeasonAdjustment(current_season);
-				//System.out.println(seasonAdjustment);
-				totalAdjustment += seasonAdjustment;
-			}
-
-			// Adjust temperature based on the number of leather armor pieces worn
-			int leatherArmorCount = 0;
-			for (boolean leatherArmor : leather_armors) {
-				if (leatherArmor) {
-					leatherArmorCount++;
+			if (MOD_CONFIG.getBool("temperature.season.affects_temperature")) {
+				if (current_season != null) {
+					BigDecimal seasonAdjustment = BigDecimal.valueOf(temperatureConfig.getSeasonAdjustment(current_season));
+					totalAdjustment = totalAdjustment.add(seasonAdjustment);
 				}
 			}
-			totalAdjustment += leatherArmorCount * LEATHER_ARMOR_PROTECTION;
 
+			if (MOD_CONFIG.getBool("temperature.biome.affects_temperature")) {
+				if (current_biome_at_block != null) {
+					BigDecimal biomeAdjustment = BigDecimal.valueOf(temperatureConfig.getBiomeAdjustment(current_biome_at_block));
+					totalAdjustment = totalAdjustment.add(biomeAdjustment);
+				}
+			}
+
+			if (MOD_CONFIG.getBool("temperature.leather.protects_temperature")) {
+				int leatherArmorCount = 0;
+				for (boolean leatherArmor : leather_armors) {
+					if (leatherArmor) {
+						leatherArmorCount++;
+					}
+				}
+				BigDecimal leatherArmorAdjustment = BigDecimal.valueOf(leatherArmorCount).multiply(BigDecimal.valueOf(LEATHER_ARMOR_PROTECTION));
+				totalAdjustment = totalAdjustment.add(leatherArmorAdjustment);
+			}
 
 			// Apply total temperature adjustment
-			if (totalAdjustment != 0.0F) {
+			if (totalAdjustment.compareTo(BigDecimal.ZERO) != 0) {
 				adjustPlayerTemperature(totalAdjustment);
-				//System.out.println(current_temperature);
-
 			}
-
-
-
 		}
 		ticks_remaining++;
-
 	}
-	public void adjustPlayerTemperature(float totalAdjustment) {
-		if (totalAdjustment > 0.0F) {
-			custom_player.stanley_lib$increasePlayerTemperature(totalAdjustment);
+
+	public void adjustPlayerTemperature(BigDecimal totalAdjustment) {
+		totalAdjustment = totalAdjustment.setScale(4, RoundingMode.HALF_UP); // round to 4 decimal places
+		if (totalAdjustment.compareTo(BigDecimal.ZERO) > 0) {
+			custom_player.stanley_lib$increasePlayerTemperature(totalAdjustment.doubleValue());
 		} else {
-			custom_player.stanley_lib$decreasePlayerTemperature(-totalAdjustment);
+			custom_player.stanley_lib$decreasePlayerTemperature(totalAdjustment.negate().doubleValue());
 		}
 	}
 }

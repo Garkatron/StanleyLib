@@ -23,8 +23,9 @@ public class ModConfig {
 
 		Properties prop = new Properties();
 
-		prop.setProperty("weather_affects_temperature", "true");
+		prop.setProperty("stanley.activate.temperature_management","true");
 
+		prop.setProperty("weather_affects_temperature", "true");
 		prop.setProperty("on_weather.overworldRain", "-0.1F");
 		prop.setProperty("on_weather.overworldSnow", "-0.2F");
 		prop.setProperty("on_weather.overworldStorm", "-0.1F");
@@ -36,13 +37,30 @@ public class ModConfig {
 		prop.setProperty("player_over_block_affects_temperature", "true");
 		prop.setProperty("on_player_over.snowBlock", "-0.05F");
 		prop.setProperty("on_player_over.water", "-0.05F");
+		prop.setProperty("on_player_over.iceBlock", "-0.03F");
 
-		prop.setProperty("temperature.protection_percentage", "0.02F");
+		prop.setProperty("temperature.snowball_affects_temperature", "true");
+		prop.setProperty("temperature.snowball", "0.01F");
 
-		prop.setProperty("season.summer.value", "0.15F");
-		prop.setProperty("season.fall.value", "0.0F");
-		prop.setProperty("season.winter.value", "-0.15F");
-		prop.setProperty("season.spring.value", "0.0F");
+		prop.setProperty("temperature.biome.affects_temperature", "true");
+		prop.setProperty("temperature.biome.plains", "0.0F");
+		prop.setProperty("temperature.biome.Taiga", "-0.1F");
+		prop.setProperty("temperature.biome.nether", "5.0F");
+		prop.setProperty("temperature.biome.birch_forest", "0.0F");
+		prop.setProperty("temperature.biome.caatinga", "-0.01F");
+		prop.setProperty("temperature.biome.boreal_forest", "0.0F");
+		prop.setProperty("temperature.biome.swanp_land", "-1.0F");
+		prop.setProperty("temperature.biome.desert", "2.0F");
+		prop.setProperty("temperature.biome.forest", "-0.015F");
+
+		prop.setProperty("temperature.leather.protection_percentage", "0.01F");
+		prop.setProperty("temperature.leather.protects_temperature", "true");
+
+		prop.setProperty("temperature.season.affects_temperature", "true");
+		prop.setProperty("temperature.season.summer.value", "0.04F");
+		prop.setProperty("temperature.season.fall.value", "0.0F");
+		prop.setProperty("temperature.season.winter.value", "-0.05F");
+		prop.setProperty("temperature.season.spring.value", "0.0F");
 
 		config = new ConfigHandler(MOD_ID, prop);
 		config.updateConfig();

@@ -10,7 +10,11 @@ import deus.stanleylib.interfaces.mixin.IPlayerEntity;
 import deus.stanleylib.interfaces.mixin.IStanleyPlayerEntity;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.material.Material;
+import net.minecraft.core.entity.Entity;
+import net.minecraft.core.entity.monster.EntitySnowman;
 import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.entity.projectile.EntityArrow;
+import net.minecraft.core.entity.projectile.EntitySnowball;
 import net.minecraft.core.item.ItemArmor;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.item.material.ArmorMaterial;
@@ -28,7 +32,10 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +52,7 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 	private PlayerTemperatureState temperature_state = PlayerTemperatureState.NORMAL;
 
 	@Unique
-	private double current_temperature = DEFAULT_TEMPERATURE;
+	private BigDecimal current_temperature = BigDecimal.valueOf(DEFAULT_TEMPERATURE);
 
 	@Unique
 	private TemperatureManager temperatureManager = new TemperatureManager(this);
@@ -61,49 +68,63 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 		//stanley_lib$registerObserver(DEFAULT_OBSERVER);
 	}
 
-
 	@Inject(method = "Lnet/minecraft/core/entity/player/EntityPlayer;tick()V", at = @At("RETURN"), remap = false)
 	public void afterUpdate(CallbackInfo ci) {
-		stanley_lib$updateTemperature();
+		if (MOD_CONFIG.getBool("stanley.activate.temperature_management"))
+			stanley_lib$updateTemperature();
+	}
+
+	@Inject(method = "Lnet/minecraft/core/entity/player/EntityPlayer;hurt(Lnet/minecraft/core/entity/Entity;ILnet/minecraft/core/util/helper/DamageType;)Z", at = @At("RETURN"), remap = false)
+	public void afterPlayerHurt(Entity attacker, int damage, DamageType type, CallbackInfoReturnable<Boolean> cir) {
+		if (MOD_CONFIG.getBool("temperature.snowball_affects_temperature")) {
+			Object obj = attacker;
+			if (obj instanceof EntitySnowball && ((EntitySnowball) obj).owner != null) {
+				stanley_lib$decreasePlayerTemperature(MOD_CONFIG.getFloat("temperature.snowball"));
+			} else if (attacker instanceof EntitySnowman) {
+				stanley_lib$decreasePlayerTemperature(MOD_CONFIG.getFloat("temperature.snowball"));
+			}
+		}
 	}
 
 	@Override
 	public double stanley_lib$getPlayerTemperature() {
-		return this.current_temperature;
+		return this.current_temperature.doubleValue();
 	}
 
 	@Override
 	public void stanley_lib$setPlayerTemperature(double temperature) {
-		this.current_temperature = temperature;
+		this.current_temperature = BigDecimal.valueOf(temperature).setScale(4, RoundingMode.HALF_UP);
 	}
 
 	@Override
 	public void stanley_lib$increasePlayerTemperature(double amount) {
-		this.current_temperature += amount;
-		EntityPlayer player = (EntityPlayer) (Object) this;
-		player.sendMessage("Your temperature has increased by: " + amount + ", current temperature: " + current_temperature);
+		this.current_temperature = this.current_temperature.add(BigDecimal.valueOf(amount)).setScale(4, RoundingMode.HALF_UP);
+		//EntityPlayer player = (EntityPlayer) (Object) this;
+		//player.sendMessage("Your temperature has increased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
+		//	", current temperature: " + this.current_temperature);
 	}
 
 	@Override
 	public void stanley_lib$decreasePlayerTemperature(double amount) {
-		this.current_temperature -= amount;
-		EntityPlayer player = (EntityPlayer) (Object) this;
-		player.sendMessage("Your temperature has decrease by: " + amount + ", current temperature: " + current_temperature);
+		this.current_temperature = this.current_temperature.subtract(BigDecimal.valueOf(amount)).setScale(4, RoundingMode.HALF_UP);
+		//EntityPlayer player = (EntityPlayer) (Object) this;
+		//player.sendMessage("Your temperature has decreased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
+		//	", current temperature: " + this.current_temperature);
 	}
 
 	@Override
 	public boolean stanley_lib$isPlayerOverheating() {
-		return this.current_temperature >= MAX_TEMPERATURE;
+		return this.current_temperature.compareTo(BigDecimal.valueOf(MAX_TEMPERATURE)) >= 0;
 	}
 
 	@Override
 	public boolean stanley_lib$isPlayerFreezing() {
-		return this.current_temperature <= MIN_TEMPERATURE;
+		return this.current_temperature.compareTo(BigDecimal.valueOf(MIN_TEMPERATURE)) <= 0;
 	}
 
 	@Override
 	public void stanley_lib$resetPlayerTemperature() {
-		this.current_temperature = DEFAULT_TEMPERATURE;
+		this.current_temperature = BigDecimal.valueOf(DEFAULT_TEMPERATURE).setScale(4, RoundingMode.HALF_UP);
 	}
 
 	@Override
@@ -123,7 +144,7 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 	@Override
 	public Block stanley_lib$getBlockUnderPlayer() {
 		EntityPlayer player = (EntityPlayer) (Object) this;
-		return player.world.getBlock((int) player.x, (int) player.y - 1, (int) player.z);
+		return player.world.getBlock((int) player.x, (int) player.y - 2, (int) player.z);
 	}
 
 	@Override
@@ -165,11 +186,7 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 
 	@Override
 	public void stanley_lib$updateTemperature() {
-
 		temperatureManager.update();
-
-
-
 	}
 
 	@Override
@@ -194,7 +211,7 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 		}
 		ItemStack armorStack = player.inventory.armorInventory[slot_index];
 
-		if (armorStack==null)
+		if (armorStack == null)
 			return null;
 
 		if (armorStack.getItem() instanceof ItemArmor) {

@@ -31,6 +31,12 @@
 			"deus.stanleylib.main"
 		]
 	},
+	"custom": {
+		"loom:injected_interfaces": {
+
+			"net/minecraft/core/entity/player": ["deus/stanleylib/interfaces/mixin/IStanleyPlayerEntity","deus/stanleylib/interfaces/mixin/IPlayerEntity"]
+		}
+	},
   "mixins": [
 		"stanleylib.mixins.json"
   ],
@@ -39,6 +45,7 @@
 		"fabricloader": ">=0.13.3",
 		"halplibe": ">=4.0.5"
 	},
+
 	"suggests": {
 	}
 }

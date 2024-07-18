@@ -15,7 +15,7 @@ This mod introduces a library of functions aimed at managing player body tempera
 
 **Gameplay features can be deactivated.**
 To deactivate:
-### stanleylib.cfg
+##### stanleylib.cfg
 ```cfg
 stanley.activate.temperature_management=false
 ```

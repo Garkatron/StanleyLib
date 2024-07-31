@@ -74,6 +74,20 @@ public interface IStanleyPlayerEntity {
 	void stanley_lib$hurtByOverheating(int amount);
 
 	/**
+	 * Hurt's the player by cold
+	 *
+	 * @param amount The amount to hurt the player.
+	 **/
+	void stanley_lib$hurtByCold(int amount);
+
+	/**
+	 * Hurt's the player by heat
+	 *
+	 * @param amount The amount to hurt the player.
+	 **/
+	void stanley_lib$hurtByHeat(int amount);
+
+	/**
 	 * Update's player temperature
 	 *
 	 **/
@@ -86,4 +100,9 @@ public interface IStanleyPlayerEntity {
 	 **/
 	void stanley_lib$setTemperatureState(PlayerTemperatureState state);
 
+	/**
+	 * Get the player's temperature state.
+	 *
+	 **/
+	PlayerTemperatureState stanley_lib$getState();
 }

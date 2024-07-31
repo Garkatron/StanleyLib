@@ -23,6 +23,11 @@ public class TemperatureManager {
 
 	private int ticks_remaining = 0;
 
+	BigDecimal overheatingTemperature = BigDecimal.valueOf(MOD_CONFIG.getConfig().getDouble("player.overHeatingTemperature"));
+	BigDecimal hotTemperature = BigDecimal.valueOf(MOD_CONFIG.getConfig().getDouble("player.hotTemperature"));
+	BigDecimal defaultTemperature = BigDecimal.valueOf(MOD_CONFIG.getConfig().getDouble("player.defaultTemperature"));
+	BigDecimal freezingTemperature = BigDecimal.valueOf(MOD_CONFIG.getConfig().getDouble("player.freezingTemperature"));
+
 	public TemperatureManager(IStanleyPlayerEntity custom_player) {
 		this.custom_player = custom_player;
 		sent_messages[0] = false;
@@ -44,47 +49,42 @@ public class TemperatureManager {
 
 		BigDecimal current_temperature = BigDecimal.valueOf(custom_player.stanley_lib$getPlayerTemperature());
 
+		boolean isOverheating = current_temperature.compareTo(overheatingTemperature) >= 0;
+		boolean isHot = current_temperature.compareTo(hotTemperature) >= 0 && current_temperature.compareTo(overheatingTemperature) < 0;
+		boolean isNormal = current_temperature.compareTo(defaultTemperature) == 0;
+		boolean isCold = current_temperature.compareTo(defaultTemperature) < 0 && current_temperature.compareTo(freezingTemperature) > 0;
+		boolean isFreezing = current_temperature.compareTo(freezingTemperature) <= 0;
+
 		// Temperature state checks
-		if (current_temperature.compareTo(BigDecimal.valueOf(60)) >= 0) {
+		if (isOverheating) {
 			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.OVERHEATING);
-			if (!sent_messages[0])
+			if (!sent_messages[0]) {
 				player.sendMessage("You are overheating! Current temperature: " + current_temperature);
-			sent_messages[0] = true;
-			sent_messages[1] = true;
-			sent_messages[2] = true;
-			sent_messages[3] = true;
+			}
+			sent_messages[0] = sent_messages[1] = sent_messages[2] = sent_messages[3] = true;
 			custom_player.stanley_lib$killByOverheating();
-		} else if (current_temperature.compareTo(BigDecimal.valueOf(40)) >= 0) {
+		} else if (isHot) {
 			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.HOT);
-			if (!sent_messages[1])
+			if (!sent_messages[1]) {
 				player.sendMessage("You are hot. Current temperature: " + current_temperature);
-			sent_messages[1] = true;
-			sent_messages[0] = true;
-			sent_messages[2] = true;
-			sent_messages[3] = true;
-		} else if (current_temperature.compareTo(BigDecimal.valueOf(DEFAULT_TEMPERATURE)) == 0) {
+			}
+			sent_messages[0] = sent_messages[1] = sent_messages[2] = sent_messages[3] = true;
+		} else if (isNormal) {
 			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.NORMAL);
-			sent_messages[0] = true;
-			sent_messages[1] = true;
-			sent_messages[2] = true;
-			sent_messages[3] = true;
+			sent_messages[0] = sent_messages[1] = sent_messages[2] = sent_messages[3] = true;
 			// player.sendMessage("Your temperature is normal. Current temperature: " + current_temperature);
-		} else if (current_temperature.compareTo(BigDecimal.valueOf(15)) <= 0 && current_temperature.compareTo(BigDecimal.valueOf(-30)) > 0) {
+		} else if (isCold) {
 			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.COLD);
-			if (!sent_messages[2])
+			if (!sent_messages[2]) {
 				player.sendMessage("You are cold. Current temperature: " + current_temperature);
-			sent_messages[2] = true;
-			sent_messages[0] = true;
-			sent_messages[1] = true;
-			sent_messages[3] = true;
-		} else if (current_temperature.compareTo(BigDecimal.valueOf(-40)) <= 0) {
+			}
+			sent_messages[0] = sent_messages[1] = sent_messages[2] = sent_messages[3] = true;
+		} else if (isFreezing) {
 			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.FREEZING);
-			if (!sent_messages[3])
+			if (!sent_messages[3]) {
 				player.sendMessage("You are freezing! Current temperature: " + current_temperature);
-			sent_messages[3] = true;
-			sent_messages[0] = true;
-			sent_messages[1] = true;
-			sent_messages[2] = true;
+			}
+			sent_messages[0] = sent_messages[1] = sent_messages[2] = sent_messages[3] = true;
 			custom_player.stanley_lib$killByFreezing();
 		}
 

@@ -1,5 +1,7 @@
 damagetype.freezing = Freezing
 damagetype.overheating = Overheating
+damagetype.cold = Cold
+damagetype.heat = Heat
 killed_by.freezing = You were frozen solid! Guess you should've packed a warmer coat.
 killed_by.overheating = You overheated! Next time, try staying out of the sauna.
 

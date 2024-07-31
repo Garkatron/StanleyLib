@@ -2,11 +2,14 @@ package deus.stanleylib;
 
 import deus.stanleylib.config.ConfigHandler;
 
+import deus.stanleylib.core.SignalAccessor;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import turniplabs.halplibe.util.GameStartEntrypoint;
 import turniplabs.halplibe.util.RecipeEntrypoint;
+
+import java.math.BigDecimal;
 
 
 public class main implements ModInitializer, GameStartEntrypoint, RecipeEntrypoint {
@@ -47,6 +50,7 @@ public class main implements ModInitializer, GameStartEntrypoint, RecipeEntrypoi
 	@Override
     public void onInitialize() {
         LOGGER.info("StanleyLib initialized.");
+		SignalAccessor accessor = SignalAccessor.getInstance();
     }
 
 	@Override

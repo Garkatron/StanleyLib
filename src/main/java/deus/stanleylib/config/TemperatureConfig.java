@@ -1,70 +1,79 @@
 package deus.stanleylib.config;
+
 import net.minecraft.core.block.material.Material;
 import net.minecraft.core.world.biome.*;
 import net.minecraft.core.world.season.*;
 import net.minecraft.core.world.weather.Weather;
+import turniplabs.halplibe.util.TomlConfigHandler;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static deus.stanleylib.main.MOD_CONFIG;
-
 public class TemperatureConfig {
-	private Map<Weather, Float> weatherTemperatureAdjustments;
-	private Map<Material, Float> blockTemperatureAdjustments;
-	private Map<Class<? extends Season>, Float> seasonAdjustments;
-	private Map<Class<? extends Biome>, Float> biomeAdjustments;
 
-	public static float LEATHER_ARMOR_PROTECTION = MOD_CONFIG.getFloat("temperature.leather.protection_percentage");
+	private final Map<Weather, Double> weatherTemperatureAdjustments;
+	private final Map<Material, Double> blockTemperatureAdjustments;
+	private final Map<Class<? extends Season>, Double> seasonAdjustments;
+	private final Map<Class<? extends Biome>, Double> biomeAdjustments;
 
-	public TemperatureConfig() {
+	public TemperatureConfig(TomlConfigHandler configHandler) {
 		weatherTemperatureAdjustments = new HashMap<>();
 		blockTemperatureAdjustments = new HashMap<>();
 		seasonAdjustments = new HashMap<>();
 		biomeAdjustments = new HashMap<>();
 
-		// Populate maps with values from MOD_CONFIG
-		weatherTemperatureAdjustments.put(Weather.overworldRain, MOD_CONFIG.getFloat("on_weather.overworldRain"));
-		weatherTemperatureAdjustments.put(Weather.overworldSnow, MOD_CONFIG.getFloat("on_weather.overworldSnow"));
-		weatherTemperatureAdjustments.put(Weather.overworldStorm, MOD_CONFIG.getFloat("on_weather.overworldStorm"));
-		weatherTemperatureAdjustments.put(Weather.overworldWinterSnow, MOD_CONFIG.getFloat("on_weather.overworldWinterSnow"));
+		// Weather adjustments
+		if (configHandler.getBoolean("weatherEffects.weatherAffectsTemperature")) {
+			weatherTemperatureAdjustments.put(Weather.overworldRain, configHandler.getDouble("weatherEffects.overworldRain"));
+			weatherTemperatureAdjustments.put(Weather.overworldSnow, configHandler.getDouble("weatherEffects.overworldSnow"));
+			weatherTemperatureAdjustments.put(Weather.overworldStorm, configHandler.getDouble("weatherEffects.overworldStorm"));
+			weatherTemperatureAdjustments.put(Weather.overworldWinterSnow, configHandler.getDouble("weatherEffects.overworldWinterSnow"));
+			// Add more weather types if needed
+		}
 
-		blockTemperatureAdjustments.put(Material.snow, MOD_CONFIG.getFloat("on_player_over.snowBlock"));
-		blockTemperatureAdjustments.put(Material.water, MOD_CONFIG.getFloat("on_player_over.water"));
-		blockTemperatureAdjustments.put(Material.ice, MOD_CONFIG.getFloat("on_player_over.iceBlock"));
+		// Block adjustments
+		if (configHandler.getBoolean("blockEffects.playerOverBlockAffectsTemperature")) {
+			blockTemperatureAdjustments.put(Material.snow, configHandler.getDouble("blockEffects.snowBlock"));
+			blockTemperatureAdjustments.put(Material.water, configHandler.getDouble("blockEffects.waterBlock"));
+			blockTemperatureAdjustments.put(Material.ice, configHandler.getDouble("blockEffects.iceBlock"));
+			// Add more block materials if needed
+		}
 
-		seasonAdjustments.put(SeasonSummer.class, MOD_CONFIG.getFloat("temperature.season.summer.value"));
-		seasonAdjustments.put(SeasonFall.class, MOD_CONFIG.getFloat("temperature.season.fall.value"));
-		seasonAdjustments.put(SeasonSpring.class, MOD_CONFIG.getFloat("temperature.season.spring.value"));
-		seasonAdjustments.put(SeasonWinter.class, MOD_CONFIG.getFloat("temperature.season.winter.value"));
+		// Season adjustments
+		if (configHandler.getBoolean("seasonEffects.seasonAffectsTemperature")) {
+			seasonAdjustments.put(SeasonSummer.class, configHandler.getDouble("seasonEffects.summerTemperature"));
+			seasonAdjustments.put(SeasonFall.class, configHandler.getDouble("seasonEffects.fallTemperature"));
+			seasonAdjustments.put(SeasonSpring.class, configHandler.getDouble("seasonEffects.springTemperature"));
+			seasonAdjustments.put(SeasonWinter.class, configHandler.getDouble("seasonEffects.winterTemperature"));
+		}
 
-		biomeAdjustments.put(BiomeDesert.class, MOD_CONFIG.getFloat("temperature.biome.desert"));
-		biomeAdjustments.put(BiomeBorealForest.class, MOD_CONFIG.getFloat("temperature.biome.boreal_forest"));
-		biomeAdjustments.put(BiomeBirchForest.class, MOD_CONFIG.getFloat("temperature.biome.birch_forest"));
-		biomeAdjustments.put(BiomeCaatinga.class, MOD_CONFIG.getFloat("temperature.biome.caatinga"));
-		biomeAdjustments.put(BiomePlains.class, MOD_CONFIG.getFloat("temperature.biome.plains"));
-		biomeAdjustments.put(BiomeSwamp.class, MOD_CONFIG.getFloat("temperature.biome.swanp_land"));
-		biomeAdjustments.put(BiomeTaiga.class, MOD_CONFIG.getFloat("temperature.biome.Taiga"));
-		biomeAdjustments.put(BiomeForest.class, MOD_CONFIG.getFloat("temperature.biome.forest"));
-		biomeAdjustments.put(BiomeNether.class, MOD_CONFIG.getFloat("temperature.biome.nether"));
-
+		// Biome adjustments
+		if (configHandler.getBoolean("biomeEffects.biomeAffectsTemperature")) {
+			biomeAdjustments.put(BiomeDesert.class, configHandler.getDouble("biomeEffects.desert"));
+			biomeAdjustments.put(BiomeBorealForest.class, configHandler.getDouble("biomeEffects.borealForest"));
+			biomeAdjustments.put(BiomeBirchForest.class, configHandler.getDouble("biomeEffects.birchForest"));
+			biomeAdjustments.put(BiomeCaatinga.class, configHandler.getDouble("biomeEffects.caatinga"));
+			biomeAdjustments.put(BiomePlains.class, configHandler.getDouble("biomeEffects.plains"));
+			biomeAdjustments.put(BiomeSwamp.class, configHandler.getDouble("biomeEffects.swampLand"));
+			biomeAdjustments.put(BiomeTaiga.class, configHandler.getDouble("biomeEffects.taiga"));
+			biomeAdjustments.put(BiomeForest.class, configHandler.getDouble("biomeEffects.forest"));
+			biomeAdjustments.put(BiomeNether.class, configHandler.getDouble("biomeEffects.nether"));
+		}
 	}
 
-	public float getWeatherTemperatureAdjustment(Weather weather) {
-		return weatherTemperatureAdjustments.getOrDefault(weather, 0.0F);
+	public Double getWeatherTemperatureAdjustment(Weather weather) {
+		return weatherTemperatureAdjustments.getOrDefault(weather, 0.0);
 	}
 
-	public float getBlockTemperatureAdjustment(Material material) {
-		return blockTemperatureAdjustments.getOrDefault(material, 0.0F);
+	public Double getBlockTemperatureAdjustment(Material material) {
+		return blockTemperatureAdjustments.getOrDefault(material, 0.0);
 	}
 
-	public float getSeasonAdjustment(Season season) {
-		return seasonAdjustments.getOrDefault(season.getClass(), 0.0F);
+	public Double getSeasonAdjustment(Season season) {
+		return seasonAdjustments.getOrDefault(season.getClass(), 0.0);
 	}
 
-	public float getBiomeAdjustment(Biome biome) {
-		return biomeAdjustments.getOrDefault(biome.getClass(), 0.0F);
-
+	public Double getBiomeAdjustment(Biome biome) {
+		return biomeAdjustments.getOrDefault(biome.getClass(), 0.0);
 	}
-
 }

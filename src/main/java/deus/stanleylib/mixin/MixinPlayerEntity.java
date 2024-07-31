@@ -39,7 +39,6 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import static deus.stanleylib.config.TemperatureConfig.LEATHER_ARMOR_PROTECTION;
 import static deus.stanleylib.main.*;
 
 @Mixin(EntityPlayer.class)
@@ -70,18 +69,18 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 
 	@Inject(method = "Lnet/minecraft/core/entity/player/EntityPlayer;tick()V", at = @At("RETURN"), remap = false)
 	public void afterUpdate(CallbackInfo ci) {
-		if (MOD_CONFIG.getBool("stanley.activate.temperature_management"))
+		if (MOD_CONFIG.getConfig().getBoolean("temperatureManagement.activateTemperatureManagement"))
 			stanley_lib$updateTemperature();
 	}
 
 	@Inject(method = "Lnet/minecraft/core/entity/player/EntityPlayer;hurt(Lnet/minecraft/core/entity/Entity;ILnet/minecraft/core/util/helper/DamageType;)Z", at = @At("RETURN"), remap = false)
 	public void afterPlayerHurt(Entity attacker, int damage, DamageType type, CallbackInfoReturnable<Boolean> cir) {
-		if (MOD_CONFIG.getBool("temperature.snowball_affects_temperature")) {
+		if (MOD_CONFIG.getConfig().getBoolean("snowballEffects.snowballAffectsTemperature")) {
 			Object obj = attacker;
 			if (obj instanceof EntitySnowball && ((EntitySnowball) obj).owner != null) {
-				stanley_lib$decreasePlayerTemperature(MOD_CONFIG.getFloat("temperature.snowball"));
+				stanley_lib$decreasePlayerTemperature(MOD_CONFIG.getConfig().getFloat("snowballEffect.snowballEffect"));
 			} else if (attacker instanceof EntitySnowman) {
-				stanley_lib$decreasePlayerTemperature(MOD_CONFIG.getFloat("temperature.snowball"));
+				stanley_lib$decreasePlayerTemperature(MOD_CONFIG.getConfig().getFloat("snowballEffect.snowballEffect"));
 			}
 		}
 	}
@@ -99,17 +98,17 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 	@Override
 	public void stanley_lib$increasePlayerTemperature(double amount) {
 		this.current_temperature = this.current_temperature.add(BigDecimal.valueOf(amount)).setScale(4, RoundingMode.HALF_UP);
-		//EntityPlayer player = (EntityPlayer) (Object) this;
-		//player.sendMessage("Your temperature has increased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
-		//	", current temperature: " + this.current_temperature);
+		EntityPlayer player = (EntityPlayer) (Object) this;
+		player.sendMessage("Your temperature has increased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
+			", current temperature: " + this.current_temperature);
 	}
 
 	@Override
 	public void stanley_lib$decreasePlayerTemperature(double amount) {
 		this.current_temperature = this.current_temperature.subtract(BigDecimal.valueOf(amount)).setScale(4, RoundingMode.HALF_UP);
-		//EntityPlayer player = (EntityPlayer) (Object) this;
-		//player.sendMessage("Your temperature has decreased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
-		//	", current temperature: " + this.current_temperature);
+		EntityPlayer player = (EntityPlayer) (Object) this;
+		player.sendMessage("Your temperature has decreased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
+			", current temperature: " + this.current_temperature);
 	}
 
 	@Override

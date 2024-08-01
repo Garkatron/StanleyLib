@@ -4,9 +4,7 @@
   "package": "deus.stanleylib.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MixinGameSettings",
-    "MixinEntityPlayer",
-    "MinecraftMixin"
+    "MixinEntityPlayer"
   ],
   "client": [
   ],

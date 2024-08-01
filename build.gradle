@@ -1,6 +1,7 @@
 plugins {
 	id 'babric-loom' version '1.4.+'
 	id 'java'
+    id 'org.jetbrains.kotlin.jvm'
 }
 
 group = project.mod_group
@@ -100,12 +101,11 @@ dependencies {
 	implementation("org.apache.logging.log4j:log4j-1.2-api:${log4jVersion}")
 
 	include(implementation("org.apache.commons:commons-lang3:3.12.0"))
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_1_8
-	targetCompatibility = JavaVersion.VERSION_1_8
-	withSourcesJar()
+    withSourcesJar()
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -124,4 +124,7 @@ processResources {
 	filesMatching("fabric.mod.json") {
 		expand "version": version
 	}
+}
+kotlin {
+    jvmToolchain(8)
 }

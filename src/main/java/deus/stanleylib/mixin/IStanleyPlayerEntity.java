@@ -1,6 +1,6 @@
-package deus.stanleylib.interfaces.mixin;
+package deus.stanleylib.mixin;
 
-import deus.stanleylib.core.enums.PlayerTemperatureState;
+import deus.stanleylib.enums.PlayerTemperatureState;
 
 public interface IStanleyPlayerEntity {
 	/**

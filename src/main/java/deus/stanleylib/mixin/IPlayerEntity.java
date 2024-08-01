@@ -1,4 +1,4 @@
-package deus.stanleylib.interfaces.mixin;
+package deus.stanleylib.mixin;
 
 import net.minecraft.core.block.Block;
 import net.minecraft.core.entity.player.EntityPlayer;

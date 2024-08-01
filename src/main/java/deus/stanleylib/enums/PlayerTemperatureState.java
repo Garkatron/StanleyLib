@@ -1,4 +1,4 @@
-package deus.stanleylib.core.enums;
+package deus.stanleylib.enums;
 
 public enum PlayerTemperatureState {
 	FREEZING,

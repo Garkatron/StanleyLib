@@ -2,14 +2,12 @@ package deus.stanleylib;
 
 import deus.stanleylib.config.ConfigHandler;
 
-import deus.stanleylib.core.SignalAccessor;
+import deus.stanleylib.management.SignalAccessor;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import turniplabs.halplibe.util.GameStartEntrypoint;
 import turniplabs.halplibe.util.RecipeEntrypoint;
-
-import java.math.BigDecimal;
 
 
 public class main implements ModInitializer, GameStartEntrypoint, RecipeEntrypoint {

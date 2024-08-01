@@ -1,7 +1,7 @@
-package deus.stanleylib.core;
+package deus.stanleylib.management;
 
 import deus.godotsignalsystem.core.Signal;
-import deus.stanleylib.core.enums.PlayerTemperatureState;
+import deus.stanleylib.enums.PlayerTemperatureState;
 
 import java.math.BigDecimal;
 

@@ -1,12 +1,10 @@
 package deus.stanleylib.mixin;
 
-import deus.stanleylib.core.SignalAccessor;
-import deus.stanleylib.core.TemperatureManager;
+import deus.stanleylib.management.SignalAccessor;
+import deus.stanleylib.management.TemperatureManager;
 
-import deus.stanleylib.core.enums.CustomDamageTypes;
-import deus.stanleylib.core.enums.PlayerTemperatureState;
-import deus.stanleylib.interfaces.mixin.IPlayerEntity;
-import deus.stanleylib.interfaces.mixin.IStanleyPlayerEntity;
+import deus.stanleylib.enums.CustomDamageTypes;
+import deus.stanleylib.enums.PlayerTemperatureState;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.monster.EntitySnowman;
@@ -90,9 +88,9 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 	@Override
 	public void stanley_lib$increasePlayerTemperature(double amount) {
 		this.current_temperature = this.current_temperature.add(BigDecimal.valueOf(amount)).setScale(4, RoundingMode.HALF_UP);
-		//EntityPlayer player = (EntityPlayer) (Object) this;
-		//player.sendMessage("Your temperature has increased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
-		//	", current temperature: " + this.current_temperature);
+		EntityPlayer player = (EntityPlayer) (Object) this;
+		player.sendMessage("Your temperature has increased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
+			", current temperature: " + this.current_temperature);
 		accessor.temperatureIncremented.emit(current_temperature);
 
 	}
@@ -100,9 +98,9 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 	@Override
 	public void stanley_lib$decreasePlayerTemperature(double amount) {
 		this.current_temperature = this.current_temperature.subtract(BigDecimal.valueOf(amount)).setScale(4, RoundingMode.HALF_UP);
-		//EntityPlayer player = (EntityPlayer) (Object) this;
-		//player.sendMessage("Your temperature has decreased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
-		//	", current temperature: " + this.current_temperature);
+		EntityPlayer player = (EntityPlayer) (Object) this;
+		player.sendMessage("Your temperature has decreased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
+			", current temperature: " + this.current_temperature);
 		accessor.temperatureDecreased.emit(current_temperature);
 	}
 

@@ -19,16 +19,16 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-			"deus.stanleylib.main"
+			"deus.stanleylib.StanleyLib"
     ],
 		"beforeGameStart": [
-			"deus.stanleylib.main"
+			"deus.stanleylib.StanleyLib"
 		],
 		"afterGameStart": [
-			"deus.stanleylib.main"
+			"deus.stanleylib.StanleyLib"
 		],
 		"recipesReady": [
-			"deus.stanleylib.main"
+			"deus.stanleylib.StanleyLib"
 		]
 	},
 	"custom": {

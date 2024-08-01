@@ -105,6 +105,7 @@ dependencies {
 }
 
 java {
+
     withSourcesJar()
 }
 
@@ -124,7 +125,4 @@ processResources {
 	filesMatching("fabric.mod.json") {
 		expand "version": version
 	}
-}
-kotlin {
-    jvmToolchain(8)
 }

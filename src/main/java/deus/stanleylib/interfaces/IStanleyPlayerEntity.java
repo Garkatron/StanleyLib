@@ -1,26 +1,29 @@
-package deus.stanleylib.mixin;
+package deus.stanleylib.interfaces;
 
 import deus.stanleylib.enums.PlayerTemperatureState;
 
-public interface IStanleyPlayerEntity {
+public interface IStanleyPlayerEntity extends IPlayerEntity {
 	/**
 	 * Gets the current temperature of the player.
 	 *
 	 * @return The current temperature as a float.
 	 */
 	double stanley_lib$getPlayerTemperature();
+
 	/**
 	 * Sets the player's temperature to a specific value.
 	 *
 	 * @param temperature The new temperature value.
 	 */
 	void stanley_lib$setPlayerTemperature(double temperature);
+
 	/**
 	 * Increases the player's temperature by a specified amount.
 	 *
 	 * @param amount The amount to increase the temperature by.
 	 */
 	void stanley_lib$increasePlayerTemperature(double amount);
+
 	/**
 	 * Decreases the player's temperature by a specified amount.
 	 *
@@ -34,6 +37,7 @@ public interface IStanleyPlayerEntity {
 	 * @return True if the player is overheating, false otherwise.
 	 */
 	boolean stanley_lib$isPlayerOverheating();
+
 	/**
 	 * Checks if the player is freezing.
 	 *
@@ -43,19 +47,16 @@ public interface IStanleyPlayerEntity {
 
 	/**
 	 * Resets the player's temperature to the default value.
-	 *
 	 **/
 	void stanley_lib$resetPlayerTemperature();
 
 	/**
 	 * Kills the player's by freezing.
-	 *
 	 **/
 	void stanley_lib$killByFreezing();
 
 	/**
 	 * Kills the player's by overheating.
-	 *
 	 **/
 	void stanley_lib$killByOverheating();
 
@@ -89,7 +90,6 @@ public interface IStanleyPlayerEntity {
 
 	/**
 	 * Update's player temperature
-	 *
 	 **/
 	void stanley_lib$updateTemperature();
 
@@ -102,7 +102,6 @@ public interface IStanleyPlayerEntity {
 
 	/**
 	 * Get the player's temperature state.
-	 *
 	 **/
 	PlayerTemperatureState stanley_lib$getState();
 }

@@ -13,107 +13,117 @@ public class MixinGameSettings implements IStanleySettings {
 	private final GameSettings mixinInst = (GameSettings) ((Object) this);
 
 	@Unique
-	private final BooleanOption activateManagement = new BooleanOption(mixinInst, "staminamod.options.activateManagement", false);
+	public BooleanOption initialRunSetupFinished =
+		new BooleanOption(mixinInst, "stanleylib.options.initialRunSetupFinished", false);
+
 
 	@Unique
-	private final FloatOption overHeatingTemperature = new FloatOption(mixinInst, "staminamod.options.overHeatingTemperature", 60.0f);
-	@Unique
-	private final FloatOption hotTemperature = new FloatOption(mixinInst, "staminamod.options.hotTemperature", 45.0f);
-	@Unique
-	private final FloatOption defaultTemperature = new FloatOption(mixinInst, "staminamod.options.defaultTemperature", 36.5f);
-	@Unique
-	private final FloatOption coldTemperature = new FloatOption(mixinInst, "staminamod.options.coldTemperature", -15.0f);
-	@Unique
-	private final FloatOption freezingTemperature = new FloatOption(mixinInst, "staminamod.options.freezingTemperature", -30.0f);
+	private final BooleanOption activateManagement = new BooleanOption(mixinInst, "stanleylib.options.activateManagement", false);
 
 	@Unique
-	private final BooleanOption weatherAffectsTemperature = new BooleanOption(mixinInst, "staminamod.options.weatherAffectsTemperature", false);
+	private final FloatOption overHeatingTemperature = new FloatOption(mixinInst, "stanleylib.options.overHeatingTemperature", 60.0f);
 	@Unique
-	private final FloatOption overworldRain = new FloatOption(mixinInst, "staminamod.options.overworldRain", -0.1f);
+	private final FloatOption hotTemperature = new FloatOption(mixinInst, "stanleylib.options.hotTemperature", 45.0f);
 	@Unique
-	private final FloatOption overworldSnow = new FloatOption(mixinInst, "staminamod.options.overworldSnow", -0.2f);
+	private final FloatOption defaultTemperature = new FloatOption(mixinInst, "stanleylib.options.defaultTemperature", 36.5f);
 	@Unique
-	private final FloatOption overworldStorm = new FloatOption(mixinInst, "staminamod.options.overworldStorm", -0.1f);
+	private final FloatOption coldTemperature = new FloatOption(mixinInst, "stanleylib.options.coldTemperature", -15.0f);
 	@Unique
-	private final FloatOption overworldWinterSnow = new FloatOption(mixinInst, "staminamod.options.overworldWinterSnow", -0.3f);
+	private final FloatOption freezingTemperature = new FloatOption(mixinInst, "stanleylib.options.freezingTemperature", -30.0f);
 
 	@Unique
-	private final BooleanOption itemAffectsTemperature = new BooleanOption(mixinInst, "staminamod.options.itemAffectsTemperature", false);
+	private final BooleanOption weatherAffectsTemperature = new BooleanOption(mixinInst, "stanleylib.options.weatherAffectsTemperature", false);
 	@Unique
-	private final FloatOption torch = new FloatOption(mixinInst, "staminamod.options.torch", 0.8f);
+	private final FloatOption overworldRain = new FloatOption(mixinInst, "stanleylib.options.overworldRain", -0.1f);
 	@Unique
-	private final FloatOption redstoneTorch = new FloatOption(mixinInst, "staminamod.options.redstoneTorch", 0.5f);
+	private final FloatOption overworldSnow = new FloatOption(mixinInst, "stanleylib.options.overworldSnow", -0.2f);
 	@Unique
-	private final FloatOption lavaBucket = new FloatOption(mixinInst, "staminamod.options.lavaBucket", 0.25f);
+	private final FloatOption overworldStorm = new FloatOption(mixinInst, "stanleylib.options.overworldStorm", -0.1f);
 	@Unique
-	private final FloatOption netherCoal = new FloatOption(mixinInst, "staminamod.options.netherCoal", 0.25f);
-	@Unique
-	private final FloatOption iceCream = new FloatOption(mixinInst, "staminamod.options.iceCream", -0.05f);
+	private final FloatOption overworldWinterSnow = new FloatOption(mixinInst, "stanleylib.options.overworldWinterSnow", -0.3f);
 
 	@Unique
-	private final BooleanOption foodAffectsTemperature = new BooleanOption(mixinInst, "staminamod.options.foodAffectsTemperature", false);
+	private final BooleanOption itemAffectsTemperature = new BooleanOption(mixinInst, "stanleylib.options.itemAffectsTemperature", false);
 	@Unique
-	private final FloatOption soup = new FloatOption(mixinInst, "staminamod.options.soup", 0.8f);
+	private final FloatOption torch = new FloatOption(mixinInst, "stanleylib.options.torch", 0.8f);
 	@Unique
-	private final FloatOption milk = new FloatOption(mixinInst, "staminamod.options.milk", -0.5f);
+	private final FloatOption redstoneTorch = new FloatOption(mixinInst, "stanleylib.options.redstoneTorch", 0.5f);
+	@Unique
+	private final FloatOption lavaBucket = new FloatOption(mixinInst, "stanleylib.options.lavaBucket", 0.25f);
+	@Unique
+	private final FloatOption netherCoal = new FloatOption(mixinInst, "stanleylib.options.netherCoal", 0.25f);
+	@Unique
+	private final FloatOption iceCream = new FloatOption(mixinInst, "stanleylib.options.iceCream", -0.05f);
 
 	@Unique
-	private final BooleanOption lifeAffectsTemperature = new BooleanOption(mixinInst, "staminamod.options.lifeAffectsTemperature", false);
+	private final BooleanOption foodAffectsTemperature = new BooleanOption(mixinInst, "stanleylib.options.foodAffectsTemperature", false);
 	@Unique
-	private final FloatOption lowLifePenalization = new FloatOption(mixinInst, "staminamod.options.lowLifePenalization", 2.0f);
+	private final FloatOption soup = new FloatOption(mixinInst, "stanleylib.options.soup", 0.8f);
 	@Unique
-	private final FloatOption heightLifeAdvantage = new FloatOption(mixinInst, "staminamod.options.heightLifeAdvantage", 2.0f);
+	private final FloatOption milk = new FloatOption(mixinInst, "stanleylib.options.milk", -0.5f);
 
 	@Unique
-	private final BooleanOption playerOverBlockAffectsTemperature = new BooleanOption(mixinInst, "staminamod.options.playerOverBlockAffectsTemperature", false);
+	private final BooleanOption lifeAffectsTemperature = new BooleanOption(mixinInst, "stanleylib.options.lifeAffectsTemperature", false);
 	@Unique
-	private final FloatOption snowBlock = new FloatOption(mixinInst, "staminamod.options.snowBlock", -0.05f);
+	private final FloatOption lowLifePenalization = new FloatOption(mixinInst, "stanleylib.options.lowLifePenalization", 2.0f);
 	@Unique
-	private final FloatOption waterBlock = new FloatOption(mixinInst, "staminamod.options.waterBlock", -0.05f);
-	@Unique
-	private final FloatOption iceBlock = new FloatOption(mixinInst, "staminamod.options.iceBlock", -0.03f);
+	private final FloatOption heightLifeAdvantage = new FloatOption(mixinInst, "stanleylib.options.heightLifeAdvantage", 2.0f);
 
 	@Unique
-	private final BooleanOption snowballAffectsTemperature = new BooleanOption(mixinInst, "staminamod.options.snowballAffectsTemperature", false);
+	private final BooleanOption playerOverBlockAffectsTemperature = new BooleanOption(mixinInst, "stanleylib.options.playerOverBlockAffectsTemperature", false);
 	@Unique
-	private final FloatOption snowballEffect = new FloatOption(mixinInst, "staminamod.options.snowballEffect", 0.01f);
+	private final FloatOption snowBlock = new FloatOption(mixinInst, "stanleylib.options.snowBlock", -0.05f);
+	@Unique
+	private final FloatOption waterBlock = new FloatOption(mixinInst, "stanleylib.options.waterBlock", -0.05f);
+	@Unique
+	private final FloatOption iceBlock = new FloatOption(mixinInst, "stanleylib.options.iceBlock", -0.03f);
 
 	@Unique
-	private final BooleanOption biomeAffectsTemperature = new BooleanOption(mixinInst, "staminamod.options.biomeAffectsTemperature", false);
+	private final BooleanOption snowballAffectsTemperature = new BooleanOption(mixinInst, "stanleylib.options.snowballAffectsTemperature", false);
 	@Unique
-	private final FloatOption plains = new FloatOption(mixinInst, "staminamod.options.plains", 0.0f);
-	@Unique
-	private final FloatOption taiga = new FloatOption(mixinInst, "staminamod.options.taiga", -0.1f);
-	@Unique
-	private final FloatOption nether = new FloatOption(mixinInst, "staminamod.options.nether", 5.0f);
-	@Unique
-	private final FloatOption birchForest = new FloatOption(mixinInst, "staminamod.options.birchForest", 0.0f);
-	@Unique
-	private final FloatOption caatinga = new FloatOption(mixinInst, "staminamod.options.caatinga", -0.01f);
-	@Unique
-	private final FloatOption borealForest = new FloatOption(mixinInst, "staminamod.options.borealForest", 0.0f);
-	@Unique
-	private final FloatOption swampLand = new FloatOption(mixinInst, "staminamod.options.swampLand", -1.0f);
-	@Unique
-	private final FloatOption desert = new FloatOption(mixinInst, "staminamod.options.desert", 2.0f);
-	@Unique
-	private final FloatOption forest = new FloatOption(mixinInst, "staminamod.options.forest", -0.015f);
+	private final FloatOption snowballEffect = new FloatOption(mixinInst, "stanleylib.options.snowballEffect", 0.01f);
 
 	@Unique
-	private final BooleanOption leatherProtectsTemperature = new BooleanOption(mixinInst, "staminamod.options.leatherProtectsTemperature", false);
+	private final BooleanOption biomeAffectsTemperature = new BooleanOption(mixinInst, "stanleylib.options.biomeAffectsTemperature", false);
 	@Unique
-	private final FloatOption leatherProtectionPercentage = new FloatOption(mixinInst, "staminamod.options.leatherProtectionPercentage", 0.01f);
+	private final FloatOption plains = new FloatOption(mixinInst, "stanleylib.options.plains", 0.0f);
+	@Unique
+	private final FloatOption taiga = new FloatOption(mixinInst, "stanleylib.options.taiga", -0.1f);
+	@Unique
+	private final FloatOption nether = new FloatOption(mixinInst, "stanleylib.options.nether", 5.0f);
+	@Unique
+	private final FloatOption birchForest = new FloatOption(mixinInst, "stanleylib.options.birchForest", 0.0f);
+	@Unique
+	private final FloatOption caatinga = new FloatOption(mixinInst, "stanleylib.options.caatinga", -0.01f);
+	@Unique
+	private final FloatOption borealForest = new FloatOption(mixinInst, "stanleylib.options.borealForest", 0.0f);
+	@Unique
+	private final FloatOption swampLand = new FloatOption(mixinInst, "stanleylib.options.swampLand", -1.0f);
+	@Unique
+	private final FloatOption desert = new FloatOption(mixinInst, "stanleylib.options.desert", 2.0f);
+	@Unique
+	private final FloatOption forest = new FloatOption(mixinInst, "stanleylib.options.forest", -0.015f);
 
 	@Unique
-	private final BooleanOption seasonAffectsTemperature = new BooleanOption(mixinInst, "staminamod.options.seasonAffectsTemperature", false);
+	private final BooleanOption leatherProtectsTemperature = new BooleanOption(mixinInst, "stanleylib.options.leatherProtectsTemperature", false);
 	@Unique
-	private final FloatOption summerTemperature = new FloatOption(mixinInst, "staminamod.options.summerTemperature", 0.04f);
+	private final FloatOption leatherProtectionPercentage = new FloatOption(mixinInst, "stanleylib.options.leatherProtectionPercentage", 0.01f);
+
 	@Unique
-	private final FloatOption fallTemperature = new FloatOption(mixinInst, "staminamod.options.fallTemperature", 0.0f);
+	private final BooleanOption seasonAffectsTemperature = new BooleanOption(mixinInst, "stanleylib.options.seasonAffectsTemperature", false);
 	@Unique
-	private final FloatOption winterTemperature = new FloatOption(mixinInst, "staminamod.options.winterTemperature", -0.05f);
+	private final FloatOption summerTemperature = new FloatOption(mixinInst, "stanleylib.options.summerTemperature", 0.04f);
 	@Unique
-	private final FloatOption springTemperature = new FloatOption(mixinInst, "staminamod.options.springTemperature", 0.0f);
+	private final FloatOption fallTemperature = new FloatOption(mixinInst, "stanleylib.options.fallTemperature", 0.0f);
+	@Unique
+	private final FloatOption winterTemperature = new FloatOption(mixinInst, "stanleylib.options.winterTemperature", -0.05f);
+	@Unique
+	private final FloatOption springTemperature = new FloatOption(mixinInst, "stanleylib.options.springTemperature", 0.0f);
+
+	@Override
+	public BooleanOption initialRunSetupFinished() {
+		return initialRunSetupFinished;
+	}
 
 	@Override
 	public BooleanOption stanley_lib_BTA$activateManagement() {

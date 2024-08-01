@@ -1,30 +1,26 @@
 package deus.stanleylib.management;
 
 import deus.stanleylib.enums.PlayerTemperatureState;
-
-import deus.stanleylib.mixin.IPlayerEntity;
-import deus.stanleylib.mixin.IStanleyPlayerEntity;
+import deus.stanleylib.interfaces.IPlayerEntity;
+import deus.stanleylib.interfaces.IStanleyPlayerEntity;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.world.biome.Biome;
 import net.minecraft.core.world.season.Season;
 import net.minecraft.core.world.weather.Weather;
 
-import static deus.stanleylib.main.*;
+import static deus.stanleylib.StanleyLib.*;
 
 public class TemperatureManager {
-
-	private IStanleyPlayerEntity custom_player;
-
-	private boolean[] sent_messages = new boolean[4];
-
-	private int ticks_remaining = 0;
 
 	Double overheatingTemperature = MOD_CONFIG.getConfig().getDouble("player.overHeatingTemperature");
 	Double hotTemperature = MOD_CONFIG.getConfig().getDouble("player.hotTemperature");
 	Double defaultTemperature = MOD_CONFIG.getConfig().getDouble("player.defaultTemperature");
 	Double coldTemperature = MOD_CONFIG.getConfig().getDouble("player.coldTemperature");
 	Double freezingTemperature = MOD_CONFIG.getConfig().getDouble("player.freezingTemperature");
+	private IStanleyPlayerEntity custom_player;
+	private boolean[] sent_messages = new boolean[4];
+	private int ticks_remaining = 0;
 
 
 	public TemperatureManager(IStanleyPlayerEntity custom_player) {

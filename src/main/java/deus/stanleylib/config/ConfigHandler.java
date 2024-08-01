@@ -3,24 +3,11 @@ package deus.stanleylib.config;
 import turniplabs.halplibe.util.TomlConfigHandler;
 import turniplabs.halplibe.util.toml.Toml;
 
-import static deus.stanleylib.main.MOD_ID;
+import static deus.stanleylib.StanleyLib.MOD_ID;
 
 public class ConfigHandler {
 
 	private static final TomlConfigHandler config;
-	private final TemperatureConfig temperatureConfig;
-
-	public ConfigHandler() {
-		this.temperatureConfig = new TemperatureConfig(config);
-	}
-
-	public TemperatureConfig getTemperatureConfig() {
-		return temperatureConfig;
-	}
-
-	public TomlConfigHandler getConfig() {
-		return config;
-	}
 
 	static {
 		Toml toml = new Toml("StanleyLibConfig");
@@ -29,11 +16,11 @@ public class ConfigHandler {
 			.addEntry("activateTemperatureManagement", true);
 
 		toml.addCategory("player")
-			.addEntry("overHeatingTemperature",60.0)
-			.addEntry("hotTemperature",45.0)
-			.addEntry("defaultTemperature",36.5)
-			.addEntry("coldTemperature",-15.0)
-			.addEntry("freezingTemperature",-30.0)
+			.addEntry("overHeatingTemperature", 60.0)
+			.addEntry("hotTemperature", 45.0)
+			.addEntry("defaultTemperature", 36.5)
+			.addEntry("coldTemperature", -15.0)
+			.addEntry("freezingTemperature", -30.0)
 		;
 
 		toml.addCategory("weatherEffects")
@@ -58,8 +45,8 @@ public class ConfigHandler {
 
 		toml.addCategory("lifeEffects")
 			.addEntry("lifeAffectsTemperature", true)
-			.addEntry("lowLifePenalization",2)
-			.addEntry("heightLifeAdvantage",2);
+			.addEntry("lowLifePenalization", 2)
+			.addEntry("heightLifeAdvantage", 2);
 
 		toml.addCategory("blockEffects")
 			.addEntry("playerOverBlockAffectsTemperature", true)
@@ -95,5 +82,19 @@ public class ConfigHandler {
 			.addEntry("springTemperature", 0.0F);
 
 		config = new TomlConfigHandler(null, MOD_ID, toml);
+	}
+
+	private final TemperatureConfig temperatureConfig;
+
+	public ConfigHandler() {
+		this.temperatureConfig = new TemperatureConfig(config);
+	}
+
+	public TemperatureConfig getTemperatureConfig() {
+		return temperatureConfig;
+	}
+
+	public TomlConfigHandler getConfig() {
+		return config;
 	}
 }

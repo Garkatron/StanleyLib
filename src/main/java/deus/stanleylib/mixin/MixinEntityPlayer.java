@@ -1,10 +1,10 @@
 package deus.stanleylib.mixin;
 
-import deus.stanleylib.management.SignalAccessor;
-import deus.stanleylib.management.TemperatureManager;
-
 import deus.stanleylib.enums.CustomDamageTypes;
 import deus.stanleylib.enums.PlayerTemperatureState;
+import deus.stanleylib.management.SignalAccessor;
+import deus.stanleylib.management.TemperatureManager;
+import deus.stanleylib.interfaces.IStanleyPlayerEntity;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.monster.EntitySnowman;
@@ -26,10 +26,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static deus.stanleylib.main.*;
+import static deus.stanleylib.StanleyLib.MOD_CONFIG;
 
 @Mixin(EntityPlayer.class)
-public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayerEntity {
+public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 
 	@Unique
 	SignalAccessor accessor = SignalAccessor.getInstance();
@@ -38,7 +38,7 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 	private PlayerTemperatureState temperature_state = PlayerTemperatureState.NORMAL;
 
 	@Unique
-	private BigDecimal current_temperature = BigDecimal.valueOf(MOD_CONFIG.getConfig().getDouble("player.defaultTemperature"));
+	private Double current_temperature = MOD_CONFIG.getConfig().getDouble("player.defaultTemperature");
 
 	@Unique
 	private TemperatureManager temperatureManager = new TemperatureManager(this);
@@ -82,12 +82,12 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 
 	@Override
 	public void stanley_lib$setPlayerTemperature(double temperature) {
-		this.current_temperature = BigDecimal.valueOf(temperature).setScale(4, RoundingMode.HALF_UP);
+		this.current_temperature = temperature;
 	}
 
 	@Override
 	public void stanley_lib$increasePlayerTemperature(double amount) {
-		this.current_temperature = this.current_temperature.add(BigDecimal.valueOf(amount)).setScale(4, RoundingMode.HALF_UP);
+		this.current_temperature += amount;
 		EntityPlayer player = (EntityPlayer) (Object) this;
 		player.sendMessage("Your temperature has increased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
 			", current temperature: " + this.current_temperature);
@@ -97,7 +97,7 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 
 	@Override
 	public void stanley_lib$decreasePlayerTemperature(double amount) {
-		this.current_temperature = this.current_temperature.subtract(BigDecimal.valueOf(amount)).setScale(4, RoundingMode.HALF_UP);
+		this.current_temperature -= amount;
 		EntityPlayer player = (EntityPlayer) (Object) this;
 		player.sendMessage("Your temperature has decreased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
 			", current temperature: " + this.current_temperature);
@@ -106,17 +106,17 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 
 	@Override
 	public boolean stanley_lib$isPlayerOverheating() {
-		return this.current_temperature.compareTo(BigDecimal.valueOf(MAX_TEMPERATURE)) >= 0;
+		return this.current_temperature == MOD_CONFIG.getConfig().getDouble("player.overHeatingTemperature");
 	}
 
 	@Override
 	public boolean stanley_lib$isPlayerFreezing() {
-		return this.current_temperature.compareTo(BigDecimal.valueOf(MIN_TEMPERATURE)) <= 0;
+		return this.current_temperature == MOD_CONFIG.getConfig().getDouble("player.freezingTemperature");
 	}
 
 	@Override
 	public void stanley_lib$resetPlayerTemperature() {
-		this.current_temperature = BigDecimal.valueOf(DEFAULT_TEMPERATURE).setScale(4, RoundingMode.HALF_UP);
+		this.current_temperature = MOD_CONFIG.getConfig().getDouble("player.defaultTemperature");
 	}
 
 	@Override
@@ -204,11 +204,11 @@ public abstract class MixinPlayerEntity implements IStanleyPlayerEntity, IPlayer
 
 	@Override
 	public void stanley_lib$hurtByCold(int amount) {
-		this.hurt(null,amount,CustomDamageTypes.COLD);
+		this.hurt(null, amount, CustomDamageTypes.COLD);
 	}
 
 	@Override
 	public void stanley_lib$hurtByHeat(int amount) {
-		this.hurt(null,amount,CustomDamageTypes.HEAT);
+		this.hurt(null, amount, CustomDamageTypes.HEAT);
 	}
 }

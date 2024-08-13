@@ -31,7 +31,8 @@ public class TemperatureConfig {
 			// Add more weather types if needed
 		}
 
-		// Block adjustments
+		// Block ad
+		justments
 		if (configHandler.getBoolean("blockEffects.playerOverBlockAffectsTemperature")) {
 			blockTemperatureAdjustments.put(Material.snow, configHandler.getDouble("blockEffects.snowBlock"));
 			blockTemperatureAdjustments.put(Material.water, configHandler.getDouble("blockEffects.waterBlock"));

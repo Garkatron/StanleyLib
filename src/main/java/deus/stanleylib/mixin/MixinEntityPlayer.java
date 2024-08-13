@@ -10,11 +10,13 @@ import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.monster.EntitySnowman;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.entity.projectile.EntitySnowball;
+import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemArmor;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.item.material.ArmorMaterial;
 import net.minecraft.core.util.helper.DamageType;
 import net.minecraft.core.world.World;
+import org.lwjgl.Sys;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -51,6 +53,9 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 
 	@Shadow
 	public abstract boolean hurt(Entity attacker, int damage, DamageType type);
+
+	@Shadow
+	public abstract ItemStack getCurrentEquippedItem();
 
 	@Inject(method = "<init>(Lnet/minecraft/core/world/World;)V", at = @At("RETURN"), remap = false)
 	public void afterConstructor(World world, CallbackInfo ci) {
@@ -210,5 +215,13 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	@Override
 	public void stanley_lib$hurtByHeat(int amount) {
 		this.hurt(null, amount, CustomDamageTypes.HEAT);
+	}
+
+	@Override
+	public Item stanley_lib$getItemInHand() {
+		ItemStack itemStack = getCurrentEquippedItem();
+		if (itemStack!=null)
+			return itemStack.getItem();
+		return null;
 	}
 }

@@ -1,6 +1,8 @@
 package deus.stanleylib.interfaces;
 
 import deus.stanleylib.enums.PlayerTemperatureState;
+import net.minecraft.core.block.Block;
+import net.minecraft.core.item.Item;
 
 public interface IStanleyPlayerEntity extends IPlayerEntity {
 	/**
@@ -104,4 +106,10 @@ public interface IStanleyPlayerEntity extends IPlayerEntity {
 	 * Get the player's temperature state.
 	 **/
 	PlayerTemperatureState stanley_lib$getState();
+
+	/**
+	 * Get a heat source near of the player
+	 **/
+	Block stanley_lib$getHeatSource();
+
 }

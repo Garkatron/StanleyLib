@@ -4,10 +4,13 @@ import deus.stanleylib.enums.PlayerTemperatureState;
 import deus.stanleylib.interfaces.IPlayerEntity;
 import deus.stanleylib.interfaces.IStanleyPlayerEntity;
 import net.minecraft.core.block.Block;
+import net.minecraft.core.block.BlockTorch;
 import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.item.Item;
 import net.minecraft.core.world.biome.Biome;
 import net.minecraft.core.world.season.Season;
 import net.minecraft.core.world.weather.Weather;
+import org.lwjgl.Sys;
 
 import static deus.stanleylib.StanleyLib.*;
 
@@ -18,8 +21,8 @@ public class TemperatureManager {
 	Double defaultTemperature = MOD_CONFIG.getConfig().getDouble("player.defaultTemperature");
 	Double coldTemperature = MOD_CONFIG.getConfig().getDouble("player.coldTemperature");
 	Double freezingTemperature = MOD_CONFIG.getConfig().getDouble("player.freezingTemperature");
-	private IStanleyPlayerEntity custom_player;
-	private boolean[] sent_messages = new boolean[4];
+	private final IStanleyPlayerEntity custom_player;
+	private final boolean[] sent_messages = new boolean[4];
 	private int ticks_remaining = 0;
 
 
@@ -90,6 +93,32 @@ public class TemperatureManager {
 				totalAdjustment += leatherArmorAdjustment;
 			}
 
+			// Adjust temperature based on equipped item
+			Item item = custom_player.stanley_lib$getItemInHand();
+			if (
+				MOD_CONFIG.getConfig().getBoolean("itemEffects.itemAffectsTemperature") &&
+				item!=null
+			) {
+				if (item == Item.bucketLava) {
+
+					totalAdjustment += MOD_CONFIG.getConfig().getDouble("itemEffects.lavaBucket");
+
+				} else if (item == Item.nethercoal) {
+
+					totalAdjustment += MOD_CONFIG.getConfig().getDouble("itemEffects.netherCoal");
+
+				} else if (item == Block.torchCoal.asItem()) {
+
+					totalAdjustment += MOD_CONFIG.getConfig().getDouble("itemEffects.torch");
+
+				} else if (item == Block.torchRedstoneIdle.asItem()) {
+
+					totalAdjustment += MOD_CONFIG.getConfig().getDouble("itemEffects.redstoneTorch");
+
+				}
+			}
+
+
 			if (totalAdjustment != 0.0f) {
 				adjustPlayerTemperature(totalAdjustment);
 			}
@@ -115,16 +144,21 @@ public class TemperatureManager {
 				player.sendMessage("You are overheating! Current temperature: " + current_temperature);
 			}
 			sent_messages[0] = sent_messages[1] = sent_messages[2] = sent_messages[3] = true;
-			custom_player.stanley_lib$killByOverheating();
+
+			//custom_player.stanley_lib$killByOverheating();
+			custom_player.stanley_lib$hurtByHeat(1);
+
 		} else if (isHot) {
 			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.HOT);
 			if (!sent_messages[1]) {
 				player.sendMessage("You are hot. Current temperature: " + current_temperature);
 			}
 			sent_messages[0] = sent_messages[1] = sent_messages[2] = sent_messages[3] = true;
+
 		} else if (isNormal) {
 			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.NORMAL);
 			sent_messages[0] = sent_messages[1] = sent_messages[2] = sent_messages[3] = true;
+
 			// player.sendMessage("Your temperature is normal. Current temperature: " + current_temperature);
 		} else if (isCold) {
 			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.COLD);
@@ -138,7 +172,8 @@ public class TemperatureManager {
 				player.sendMessage("You are freezing! Current temperature: " + current_temperature);
 			}
 			sent_messages[0] = sent_messages[1] = sent_messages[2] = sent_messages[3] = true;
-			custom_player.stanley_lib$killByFreezing();
+			custom_player.stanley_lib$hurtByHeat(1);
+
 		}
 	}
 

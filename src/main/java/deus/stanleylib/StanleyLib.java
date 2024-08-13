@@ -2,7 +2,6 @@ package deus.stanleylib;
 
 import deus.stanleylib.config.ConfigHandler;
 
-import deus.stanleylib.config.IStanleySettings;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +17,7 @@ public class StanleyLib implements ModInitializer, GameStartEntrypoint, RecipeEn
 
 	static final int TICKS_PER_SECOND = 20;
 
-	public static IStanleySettings options;
+	//public static IStanleySettings options;
 
 	/**
 	 * The quenty of time (in s) to update player temperature

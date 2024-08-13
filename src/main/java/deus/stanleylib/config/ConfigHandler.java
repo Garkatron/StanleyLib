@@ -32,11 +32,10 @@ public class ConfigHandler {
 
 		toml.addCategory("itemEffects")
 			.addEntry("itemAffectsTemperature", true)
-			.addEntry("torch", 0.8F)
-			.addEntry("redstoneTorch", 0.5F)
+			.addEntry("torch", 0.1F)
+			.addEntry("redstoneTorch", 0.05F)
 			.addEntry("lavaBucket", 0.25F)
-			.addEntry("netherCoal", 0.25F)
-			.addEntry("iceCream", -0.05F);
+			.addEntry("netherCoal", 0.25F);
 
 		toml.addCategory("foodEffects")
 			.addEntry("foodAffectsTemperature", true)
@@ -52,6 +51,8 @@ public class ConfigHandler {
 			.addEntry("playerOverBlockAffectsTemperature", true)
 			.addEntry("snowBlock", -0.05F)
 			.addEntry("waterBlock", -0.05F)
+			.addEntry("fire", -2.00F)
+			.addEntry("lava", -2.00F)
 			.addEntry("iceBlock", -0.03F);
 
 		toml.addCategory("snowballEffects")

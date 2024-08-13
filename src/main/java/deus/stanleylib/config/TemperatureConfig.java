@@ -36,6 +36,8 @@ public class TemperatureConfig {
 			blockTemperatureAdjustments.put(Material.snow, configHandler.getDouble("blockEffects.snowBlock"));
 			blockTemperatureAdjustments.put(Material.water, configHandler.getDouble("blockEffects.waterBlock"));
 			blockTemperatureAdjustments.put(Material.ice, configHandler.getDouble("blockEffects.iceBlock"));
+			blockTemperatureAdjustments.put(Material.lava, configHandler.getDouble("blockEffects.lava"));
+			blockTemperatureAdjustments.put(Material.fire, configHandler.getDouble("blockEffects.fire"));
 			// Add more block materials if needed
 		}
 

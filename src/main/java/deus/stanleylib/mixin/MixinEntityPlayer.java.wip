@@ -3,7 +3,7 @@ package deus.stanleylib.mixin;
 import deus.stanleylib.enums.CustomDamageTypes;
 import deus.stanleylib.enums.PlayerTemperatureState;
 import deus.stanleylib.management.SignalAccessor;
-import deus.stanleylib.management.TemperatureManager;
+
 import deus.stanleylib.interfaces.IStanleyPlayerEntity;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.entity.Entity;
@@ -42,9 +42,6 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	@Unique
 	private Double current_temperature = MOD_CONFIG.getConfig().getDouble("player.defaultTemperature");
 
-	@Unique
-	private TemperatureManager temperatureManager = new TemperatureManager(this);
-
 	@Shadow
 	public abstract boolean killPlayer();
 
@@ -62,11 +59,10 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 		//stanley_lib$registerObserver(DEFAULT_OBSERVER);
 	}
 
-	@Inject(method = "Lnet/minecraft/core/entity/player/EntityPlayer;tick()V", at = @At("RETURN"), remap = false)
-	public void afterUpdate(CallbackInfo ci) {
-		if (MOD_CONFIG.getConfig().getBoolean("temperatureManagement.activateTemperatureManagement"))
-			stanley_lib$updateTemperature();
-	}
+//	@Inject(method = "Lnet/minecraft/core/entity/player/EntityPlayer;tick()V", at = @At("RETURN"), remap = false)
+//	public void afterUpdate(CallbackInfo ci) {
+//
+//	}
 
 	@Inject(method = "Lnet/minecraft/core/entity/player/EntityPlayer;hurt(Lnet/minecraft/core/entity/Entity;ILnet/minecraft/core/util/helper/DamageType;)Z", at = @At("RETURN"), remap = false)
 	public void afterPlayerHurt(Entity attacker, int damage, DamageType type, CallbackInfoReturnable<Boolean> cir) {
@@ -93,9 +89,9 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	@Override
 	public void stanley_lib$increasePlayerTemperature(double amount) {
 		this.current_temperature += amount;
-		EntityPlayer player = (EntityPlayer) (Object) this;
-		player.sendMessage("Your temperature has increased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
-			", current temperature: " + this.current_temperature);
+		//EntityPlayer player = (EntityPlayer) (Object) this;
+		//player.sendMessage("Your temperature has increased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
+		//	", current temperature: " + this.current_temperature);
 		accessor.temperatureIncremented.emit(current_temperature);
 
 	}
@@ -103,9 +99,9 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	@Override
 	public void stanley_lib$decreasePlayerTemperature(double amount) {
 		this.current_temperature -= amount;
-		EntityPlayer player = (EntityPlayer) (Object) this;
-		player.sendMessage("Your temperature has decreased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
-			", current temperature: " + this.current_temperature);
+		//EntityPlayer player = (EntityPlayer) (Object) this;
+		//player.sendMessage("Your temperature has decreased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
+		//	", current temperature: " + this.current_temperature);
 		accessor.temperatureDecreased.emit(current_temperature);
 	}
 
@@ -171,10 +167,10 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 		return this.temperature_state;
 	}
 
-	@Override
-	public void stanley_lib$updateTemperature() {
-		temperatureManager.update();
-	}
+//	@Override
+//	public void stanley_lib$updateTemperature() {
+//		temperatureManager.update();
+//	}
 
 	@Override
 	public boolean[] hasLeatherArmor(EntityPlayer player) {

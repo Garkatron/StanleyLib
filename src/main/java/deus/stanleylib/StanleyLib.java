@@ -2,6 +2,7 @@ package deus.stanleylib;
 
 import deus.stanleylib.config.ConfigHandler;
 
+import deus.stanleylib.overlay.HudManager;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ public class StanleyLib implements ModInitializer, GameStartEntrypoint, RecipeEn
 	public static ConfigHandler MOD_CONFIG = new ConfigHandler();;
 
 	static final int TICKS_PER_SECOND = 20;
+	public static final HudManager hudManager = new HudManager();
 
 	//public static IStanleySettings options;
 
@@ -33,8 +35,11 @@ public class StanleyLib implements ModInitializer, GameStartEntrypoint, RecipeEn
 
 	@Override
     public void onInitialize() {
-        LOGGER.info("StanleyLib initialized.");
-    }
+
+		LOGGER.info("StanleyLib initialized.");
+
+
+	}
 
 	@Override
 	public void beforeGameStart() {
@@ -43,6 +48,7 @@ public class StanleyLib implements ModInitializer, GameStartEntrypoint, RecipeEn
 
 	@Override
 	public void afterGameStart() {
+		hudManager.onInitialize();
 
 	}
 

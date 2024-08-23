@@ -16,11 +16,11 @@ public class ConfigHandler {
 			.addEntry("activateTemperatureManagement", true);
 
 		toml.addCategory("player")
-			.addEntry("overHeatingTemperature", 60.0)
-			.addEntry("hotTemperature", 45.0)
-			.addEntry("defaultTemperature", 36.5)
-			.addEntry("coldTemperature", -15.0)
-			.addEntry("freezingTemperature", -30.0)
+			.addEntry("overHeatingTemperature", 120.0)
+			.addEntry("hotTemperature", 90.0)
+			.addEntry("defaultTemperature", 72.5)
+			.addEntry("coldTemperature", 30.0)
+			.addEntry("freezingTemperature", 0.0)
 		;
 
 		toml.addCategory("weatherEffects")

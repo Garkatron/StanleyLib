@@ -43,6 +43,9 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	private Double current_temperature = MOD_CONFIG.getConfig().getDouble("player.defaultTemperature");
 
 	@Unique
+	private Double prev_temperature = MOD_CONFIG.getConfig().getDouble("player.defaultTemperature");
+
+	@Unique
 	private TemperatureManager temperatureManager = new TemperatureManager(this);
 
 	@Shadow
@@ -87,11 +90,13 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 
 	@Override
 	public void stanley_lib$setPlayerTemperature(double temperature) {
+		this.prev_temperature = this.current_temperature;
 		this.current_temperature = temperature;
 	}
 
 	@Override
 	public void stanley_lib$increasePlayerTemperature(double amount) {
+		this.prev_temperature = this.current_temperature;
 		this.current_temperature += amount;
 		EntityPlayer player = (EntityPlayer) (Object) this;
 		player.sendMessage("Your temperature has increased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
@@ -102,6 +107,7 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 
 	@Override
 	public void stanley_lib$decreasePlayerTemperature(double amount) {
+		this.prev_temperature = this.current_temperature;
 		this.current_temperature -= amount;
 		EntityPlayer player = (EntityPlayer) (Object) this;
 		player.sendMessage("Your temperature has decreased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
@@ -223,5 +229,10 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 		if (itemStack!=null)
 			return itemStack.getItem();
 		return null;
+	}
+
+	@Override
+	public double stanley_lib$getPlayerPreviousTemperature() {
+		return prev_temperature;
 	}
 }

@@ -17,7 +17,6 @@ public class StanleyLib implements ModInitializer, GameStartEntrypoint, RecipeEn
 	public static ConfigHandler MOD_CONFIG = new ConfigHandler();;
 
 	static final int TICKS_PER_SECOND = 20;
-	public static final HudManager hudManager = new HudManager();
 
 	//public static IStanleySettings options;
 
@@ -48,7 +47,8 @@ public class StanleyLib implements ModInitializer, GameStartEntrypoint, RecipeEn
 
 	@Override
 	public void afterGameStart() {
-		hudManager.onInitialize();
+		HudManager.init();
+
 
 	}
 

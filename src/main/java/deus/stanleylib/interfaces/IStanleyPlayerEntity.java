@@ -13,6 +13,14 @@ public interface IStanleyPlayerEntity extends IPlayerEntity {
 	double stanley_lib$getPlayerTemperature();
 
 	/**
+	 * Gets the previous temperature of the player.
+	 *
+	 * @return The current temperature as a float.
+	 */
+	double stanley_lib$getPlayerPreviousTemperature();
+
+
+	/**
 	 * Sets the player's temperature to a specific value.
 	 *
 	 * @param temperature The new temperature value.

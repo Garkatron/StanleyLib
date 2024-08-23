@@ -98,9 +98,9 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	public void stanley_lib$increasePlayerTemperature(double amount) {
 		this.prev_temperature = this.current_temperature;
 		this.current_temperature += amount;
-		EntityPlayer player = (EntityPlayer) (Object) this;
-		player.sendMessage("Your temperature has increased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
-			", current temperature: " + this.current_temperature);
+		//EntityPlayer player = (EntityPlayer) (Object) this;
+		//player.sendMessage("Your temperature has increased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
+		//	", current temperature: " + this.current_temperature);
 		accessor.temperatureIncremented.emit(current_temperature);
 
 	}
@@ -109,9 +109,9 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	public void stanley_lib$decreasePlayerTemperature(double amount) {
 		this.prev_temperature = this.current_temperature;
 		this.current_temperature -= amount;
-		EntityPlayer player = (EntityPlayer) (Object) this;
-		player.sendMessage("Your temperature has decreased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
-			", current temperature: " + this.current_temperature);
+		//EntityPlayer player = (EntityPlayer) (Object) this;
+		//player.sendMessage("Your temperature has decreased by: " + BigDecimal.valueOf(amount).setScale(4, RoundingMode.HALF_UP) +
+		//	", current temperature: " + this.current_temperature);
 		accessor.temperatureDecreased.emit(current_temperature);
 	}
 

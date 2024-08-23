@@ -7,6 +7,8 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.hud.Layout;
 import net.minecraft.client.gui.hud.MovableHudComponent;
+import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.player.gamemode.Gamemode;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -18,7 +20,7 @@ public class ThermometerComponent extends MovableHudComponent {
 	private float currentTemperature = 0.0f;
 
 	public Color freezing = new Color(0, 0, 255, 255); // Azul
-	public Color cold = new Color(192, 192, 192, 255); // Gris claro
+	public Color cold = new Color(152, 152, 232, 255); // Gris claro
 	public Color normal = new Color(122, 122, 122, 255); // Gris neutro
 	public Color hot = new Color(255, 165, 0, 255); // Naranja
 	public Color overheating = new Color(255, 0, 0, 255); // Rojo
@@ -36,8 +38,14 @@ public class ThermometerComponent extends MovableHudComponent {
 	}
 
 	@Override
-	public boolean isVisible(Minecraft minecraft) {
-		return true; // Cambiado para que siempre sea visible
+	public boolean isVisible(Minecraft mc)
+	{
+		EntityPlayer player = mc.thePlayer;
+		if (player == null)
+			return true;
+
+		return (!player.getGamemode().isPlayerInvulnerable() && mc.gameSettings.immersiveMode.drawHotbar() && player.getGamemode()
+			.equals(Gamemode.survival));
 	}
 
 	private void renderSprite(Minecraft mc, Gui gui, int x, int y, double targetTemperature, PlayerTemperatureState state) {
@@ -95,6 +103,13 @@ public class ThermometerComponent extends MovableHudComponent {
 		IStanleyPlayerEntity customPlayer = (IStanleyPlayerEntity) mc.thePlayer;
 
 		double targetTemperature = customPlayer.stanley_lib$getPlayerTemperature() / 100.0;
+
+		if (targetTemperature>=1) {
+			targetTemperature = 1;
+		} else if (targetTemperature<=0) {
+			targetTemperature=0;
+		}
+
 		renderSprite(mc, gui, x, y, targetTemperature, customPlayer.stanley_lib$getState());
 	}
 
@@ -105,7 +120,7 @@ public class ThermometerComponent extends MovableHudComponent {
 			int x = layout.getComponentX(mc, this, xSizeScreen);
 			int y = layout.getComponentY(mc, this, ySizeScreen);
 
-			renderSprite(mc, gui, x, y, 1.0f, PlayerTemperatureState.NORMAL);
+			renderSprite(mc, gui, x, y, 0.5f, PlayerTemperatureState.NORMAL);
 		}
 	}
 	private void setColor(Color color)

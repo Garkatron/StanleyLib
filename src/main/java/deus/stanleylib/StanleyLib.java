@@ -14,7 +14,7 @@ public class StanleyLib implements ModInitializer, GameStartEntrypoint, RecipeEn
 
     public static final String MOD_ID = "stanleylib";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static ConfigHandler MOD_CONFIG = new ConfigHandler();;
+	public static ConfigHandler MOD_CONFIG = new ConfigHandler();
 
 	static final int TICKS_PER_SECOND = 20;
 

@@ -24,7 +24,8 @@ public class TemperatureManager {
 	private final IStanleyPlayerEntity custom_player;
 	private final boolean[] sent_messages = new boolean[4];
 	private int ticks_remaining = 0;
-
+	double previousPenalization = -1; // Store previous penalization value
+	double penalization = 0;
 
 	public TemperatureManager(IStanleyPlayerEntity custom_player) {
 		this.custom_player = custom_player;
@@ -51,6 +52,34 @@ public class TemperatureManager {
 
 		// Calculate total temperature adjustment
 		Double totalAdjustment = 0.0;
+
+		// Adjust temperature based on the health
+		if (MOD_CONFIG.getConfig().getBoolean("lifeEffects.lifeAffectsTemperature")) {
+			// Get the absolute difference between the current health and maximum health
+			int healthDifference = player.getMaxHealth() - player.getHealth();
+
+			// Ensure that heartCount is not zero to avoid division by zero
+			int heartCount = MOD_CONFIG.getConfig().getInt("lifeEffects.applyEffectEveryXHearts");
+			if (heartCount <= 0) {
+				heartCount = 1; // Set to 1 to avoid division by zero
+			}
+
+			// Calculate the number of heart groups lost
+			int heartGroups = healthDifference / heartCount;
+
+			double penalization = 0;
+
+			if (heartGroups > 0) {
+				// Calculate the penalization based on the number of heart groups lost
+				penalization = MOD_CONFIG.getConfig().getDouble("lifeEffects.temperatureResistancePenalizationPerHeart") * heartGroups;
+			}
+
+			// Apply penalization to the base temperatures
+			coldTemperature = MOD_CONFIG.getConfig().getDouble("player.coldTemperature") + penalization;
+			freezingTemperature = MOD_CONFIG.getConfig().getDouble("player.freezingTemperature") + penalization;
+		}
+
+
 
 		if (ticks_remaining >= secondsToTicks(NEEDED_TIME_TO_UPDATE)) {
 			ticks_remaining = 0;

@@ -12,6 +12,10 @@ public class ConfigHandler {
 	static {
 		Toml toml = new Toml("StanleyLibConfig");
 
+		toml.addCategory("Gui")
+			.addEntry("temperatureBar","vertical or horizontal","vertical")
+			.addEntry("temperatureBarCompact","small version",true);
+
 		toml.addCategory("temperatureManagement")
 			.addEntry("activateTemperatureManagement", true);
 

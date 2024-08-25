@@ -13,11 +13,19 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
+import static deus.stanleylib.StanleyLib.MOD_CONFIG;
+
 public class ThermometerComponent extends MovableHudComponent {
 
-	private int width = 182;
-	private int height = 5;
+	private int width = getTemperatureBarW();
+	private int height = getTemperatureBarH();
 	private float currentTemperature = 0.0f;
+
+	private static final int COMPACT_HEIGHT = 48;
+	private static final int REGULAR_HEIGHT = 182;
+	private static final int COMPACT_WIDTH = 48;
+	private static final int REGULAR_WIDTH = 182;
+	private static final int SPECIAL_VALUE = 5; // Valor especial requerido
 
 	public Color freezing = new Color(0, 0, 255, 255); // Azul
 	public Color cold = new Color(152, 152, 232, 255); // Gris claro
@@ -29,7 +37,7 @@ public class ThermometerComponent extends MovableHudComponent {
 	private float flashTime = 0.0f;
 	private long previousTime = 0;
 
-	private final String texture = "assets/stanleylib/textures/gui/thermometer.png"; // Ruta de la textura con el prefijo /
+	private final String texture = getTexture();
 	// assets/stanleylib/textures/gui/thermometer.png
 	// /assets/minecraft/textures/gui/icons.png
 
@@ -88,9 +96,24 @@ public class ThermometerComponent extends MovableHudComponent {
 
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
 
-		// Usa currentTemperature para dibujar la barra de temperatura suavizada
-		gui.drawTexturedModalRect(x, y, 0, 0, width, height);
-		gui.drawTexturedModalRect(x, y, 0, height, (int) (currentTemperature * width), height);
+		int textureWidth = width;
+		int textureHeight = height;
+
+		// Draw the thermometer texture background
+		gui.drawTexturedModalRect(x, y, 0, 0, textureWidth, textureHeight);
+
+		// Calculate the height or width to draw based on orientation
+		if (MOD_CONFIG.getConfig().getString("Gui.temperatureBar").equals("vertical")) {
+			int filledHeight = (int) (currentTemperature * height);
+			// Ensure filled height doesn't exceed the component height
+			filledHeight = Math.min(filledHeight, height);
+			gui.drawTexturedModalRect(x, y + height - filledHeight, width, height - filledHeight, width, filledHeight);
+		} else {
+			int filledWidth = (int) (currentTemperature * width);
+			// Ensure filled width doesn't exceed the component width
+			filledWidth = Math.min(filledWidth, width);
+			gui.drawTexturedModalRect(x, y, 0, height, filledWidth, height);
+		}
 
 		previousTime = System.currentTimeMillis(); // Actualizar el tiempo anterior
 	}
@@ -141,4 +164,40 @@ public class ThermometerComponent extends MovableHudComponent {
 		return a + (b - a) * t;
 	}
 
+	public static int getTemperatureBarH() {
+		String orientation = MOD_CONFIG.getConfig().getString("Gui.temperatureBar");
+		boolean isCompact = MOD_CONFIG.getConfig().getBoolean("Gui.temperatureBarCompact");
+
+		if ("vertical".equals(orientation)) {
+			return isCompact ? COMPACT_HEIGHT : REGULAR_HEIGHT;
+		} else {
+			return SPECIAL_VALUE;
+		}
+	}
+
+	public static int getTemperatureBarW() {
+		String orientation = MOD_CONFIG.getConfig().getString("Gui.temperatureBar");
+		boolean isCompact = MOD_CONFIG.getConfig().getBoolean("Gui.temperatureBarCompact");
+
+		if ("horizontal".equals(orientation)) {
+			return isCompact ? COMPACT_WIDTH : REGULAR_WIDTH;
+		} else {
+			return SPECIAL_VALUE;
+		}
+	}
+
+	public static String getTexture() {
+		String orientation = MOD_CONFIG.getConfig().getString("Gui.temperatureBar");
+		boolean isCompact = MOD_CONFIG.getConfig().getBoolean("Gui.temperatureBarCompact");
+		if ("horizontal".equals(orientation)) {
+			return isCompact ? "assets/stanleylib/textures/gui/c_thermometer.png" : "assets/stanleylib/textures/gui/thermometer.png";
+		} else {
+
+			if ("vertical".equals(orientation)) {
+				return isCompact ? "assets/stanleylib/textures/gui/vc_thermometer.png" : "assets/stanleylib/textures/gui/v_thermometer.png";
+			} else {
+				return "";
+			}
+		}
+	}
 }

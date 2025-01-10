@@ -36,15 +36,15 @@ public class TemperatureManager {
 	public void update() {
 		IPlayerEntity iplayer = (IPlayerEntity) custom_player;
 
-		Block under_player_block = iplayer.stanley_lib$getBlockUnderPlayer();
+		Block under_player_block = iplayer.stanley$getBlockUnderPlayer();
 		EntityPlayer player = (EntityPlayer) (Object) this.custom_player;
 
 		Biome current_biome_at_block = player.world.getBlockBiome((int) player.x, (int) player.y, (int) player.z);
 		Season current_season = player.world.seasonManager.getCurrentSeason();
-		boolean[] leather_armors = iplayer.hasLeatherArmor(player);
+		boolean[] leather_armors = iplayer.stanley$hasLeatherArmor(player);
 		Weather current_weather = player.world.getCurrentWeather();
 
-		Double current_temperature = custom_player.stanley_lib$getPlayerTemperature();
+		Double current_temperature = custom_player.stanley$getPlayerTemperature();
 
 		updatePlayerTemperatureState(player, current_temperature);
 
@@ -121,7 +121,7 @@ public class TemperatureManager {
 			}
 
 			// Adjust temperature based on equipped item
-			Item item = custom_player.stanley_lib$getItemInHand();
+			Item item = custom_player.stanley$getItemInHand();
 			if (
 				MOD_CONFIG.getConfig().getBoolean("itemEffects.itemAffectsTemperature") &&
 				item!=null
@@ -177,40 +177,40 @@ public class TemperatureManager {
 
 		// Temperature state checks
 		if (isOverheating) {
-			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.OVERHEATING);
+			custom_player.stanley$setTemperatureState(PlayerTemperatureState.OVERHEATING);
 			if (!sent_messages[0]) {
 				player.sendMessage("You are overheating! Current temperature: " + current_temperature);
 			}
 			sent_messages[0] = sent_messages[1] = sent_messages[2] = sent_messages[3] = true;
 
 			//custom_player.stanley_lib$killByOverheating();
-			custom_player.stanley_lib$hurtByHeat(1);
+			custom_player.stanley$hurtByHeat(1);
 
 		} else if (isHot) {
-			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.HOT);
+			custom_player.stanley$setTemperatureState(PlayerTemperatureState.HOT);
 			if (!sent_messages[1]) {
 				player.sendMessage("You are hot. Current temperature: " + current_temperature);
 			}
 			sent_messages[0] = sent_messages[1] = sent_messages[2] = sent_messages[3] = true;
 
 		} else if (isNormal) {
-			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.NORMAL);
+			custom_player.stanley$setTemperatureState(PlayerTemperatureState.NORMAL);
 			sent_messages[0] = sent_messages[1] = sent_messages[2] = sent_messages[3] = true;
 
 			// player.sendMessage("Your temperature is normal. Current temperature: " + current_temperature);
 		} else if (isCold) {
-			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.COLD);
+			custom_player.stanley$setTemperatureState(PlayerTemperatureState.COLD);
 			if (!sent_messages[2]) {
 				player.sendMessage("You are cold. Current temperature: " + current_temperature);
 			}
 			sent_messages[0] = sent_messages[1] = sent_messages[2] = sent_messages[3] = true;
 		} else if (isFreezing) {
-			custom_player.stanley_lib$setTemperatureState(PlayerTemperatureState.FREEZING);
+			custom_player.stanley$setTemperatureState(PlayerTemperatureState.FREEZING);
 			if (!sent_messages[3]) {
 				player.sendMessage("You are freezing! Current temperature: " + current_temperature);
 			}
 			sent_messages[0] = sent_messages[1] = sent_messages[2] = sent_messages[3] = true;
-			custom_player.stanley_lib$hurtByHeat(1);
+			custom_player.stanley$hurtByHeat(1);
 
 		}
 	}
@@ -218,9 +218,9 @@ public class TemperatureManager {
 	public void adjustPlayerTemperature(Double totalAdjustment) {
 		double rTotalAdjustment = Math.round(totalAdjustment * 10000.0f) / 10000.0f; // round to 4 decimal places
 		if (rTotalAdjustment > 0) {
-			custom_player.stanley_lib$increasePlayerTemperature(rTotalAdjustment);
+			custom_player.stanley$increasePlayerTemperature(rTotalAdjustment);
 		} else {
-			custom_player.stanley_lib$decreasePlayerTemperature(-rTotalAdjustment);
+			custom_player.stanley$decreasePlayerTemperature(-rTotalAdjustment);
 		}
 	}
 }

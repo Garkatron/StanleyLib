@@ -16,6 +16,7 @@ import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.item.material.ArmorMaterial;
 import net.minecraft.core.util.helper.DamageType;
 import net.minecraft.core.world.World;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -41,57 +42,53 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	@Unique
 	private Double prev_temperature = MOD_CONFIG.getConfig().getDouble("player.defaultTemperature");
 
-	@Unique
-	private TemperatureManager temperatureManager = new TemperatureManager(this);
+	@Final
+	@Unique private final TemperatureManager temperatureManager = new TemperatureManager(this);
 
-	@Shadow
-	public abstract boolean killPlayer();
+	@Shadow public abstract boolean killPlayer();
 
-	@Shadow
-	protected abstract void damageEntity(int damage, DamageType damageType);
+	@Shadow protected abstract void damageEntity(int damage, DamageType damageType);
 
-	@Shadow
-	public abstract boolean hurt(Entity attacker, int damage, DamageType type);
+	@Shadow public abstract boolean hurt(Entity attacker, int damage, DamageType type);
 
-	@Shadow
-	public abstract ItemStack getCurrentEquippedItem();
+	@Shadow public abstract ItemStack getCurrentEquippedItem();
 
 	@Inject(method = "<init>(Lnet/minecraft/core/world/World;)V", at = @At("RETURN"), remap = false)
 	public void afterConstructor(World world, CallbackInfo ci) {
 		//stanley_lib$registerObserver(DEFAULT_OBSERVER);
 	}
 
-	@Inject(method = "Lnet/minecraft/core/entity/player/EntityPlayer;tick()V", at = @At("RETURN"), remap = false)
+	@Inject(method = "tick()V", at = @At("RETURN"), remap = false)
 	public void afterUpdate(CallbackInfo ci) {
 		if (MOD_CONFIG.getConfig().getBoolean("temperatureManagement.activateTemperatureManagement"))
-			stanley_lib$updateTemperature();
+			stanley$updateTemperature();
 	}
 
-	@Inject(method = "Lnet/minecraft/core/entity/player/EntityPlayer;hurt(Lnet/minecraft/core/entity/Entity;ILnet/minecraft/core/util/helper/DamageType;)Z", at = @At("RETURN"), remap = false)
+	@Inject(method = "hurt(Lnet/minecraft/core/entity/Entity;ILnet/minecraft/core/util/helper/DamageType;)Z", at = @At("RETURN"), remap = false)
 	public void afterPlayerHurt(Entity attacker, int damage, DamageType type, CallbackInfoReturnable<Boolean> cir) {
 		if (MOD_CONFIG.getConfig().getBoolean("snowballEffects.snowballAffectsTemperature")) {
 			Object obj = attacker;
 			if (obj instanceof EntitySnowball && ((EntitySnowball) obj).owner != null) {
-				stanley_lib$decreasePlayerTemperature(MOD_CONFIG.getConfig().getFloat("snowballEffect.snowballEffect"));
+				stanley$decreasePlayerTemperature(MOD_CONFIG.getConfig().getFloat("snowballEffect.snowballEffect"));
 			} else if (attacker instanceof EntitySnowman) {
-				stanley_lib$decreasePlayerTemperature(MOD_CONFIG.getConfig().getFloat("snowballEffect.snowballEffect"));
+				stanley$decreasePlayerTemperature(MOD_CONFIG.getConfig().getFloat("snowballEffect.snowballEffect"));
 			}
 		}
 	}
 
 	@Override
-	public double stanley_lib$getPlayerTemperature() {
+	public double stanley$getPlayerTemperature() {
 		return this.current_temperature.doubleValue();
 	}
 
 	@Override
-	public void stanley_lib$setPlayerTemperature(double temperature) {
+	public void stanley$setPlayerTemperature(double temperature) {
 		this.prev_temperature = this.current_temperature;
 		this.current_temperature = temperature;
 	}
 
 	@Override
-	public void stanley_lib$increasePlayerTemperature(double amount) {
+	public void stanley$increasePlayerTemperature(double amount) {
 		this.prev_temperature = this.current_temperature;
 		this.current_temperature += amount;
 		//EntityPlayer player = (EntityPlayer) (Object) this;
@@ -102,7 +99,7 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	}
 
 	@Override
-	public void stanley_lib$decreasePlayerTemperature(double amount) {
+	public void stanley$decreasePlayerTemperature(double amount) {
 		this.prev_temperature = this.current_temperature;
 		this.current_temperature -= amount;
 		//EntityPlayer player = (EntityPlayer) (Object) this;
@@ -112,22 +109,22 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	}
 
 	@Override
-	public boolean stanley_lib$isPlayerOverheating() {
+	public boolean stanley$isPlayerOverheating() {
 		return this.current_temperature == MOD_CONFIG.getConfig().getDouble("player.overHeatingTemperature");
 	}
 
 	@Override
-	public boolean stanley_lib$isPlayerFreezing() {
+	public boolean stanley$isPlayerFreezing() {
 		return this.current_temperature == MOD_CONFIG.getConfig().getDouble("player.freezingTemperature");
 	}
 
 	@Override
-	public void stanley_lib$resetPlayerTemperature() {
+	public void stanley$resetPlayerTemperature() {
 		this.current_temperature = MOD_CONFIG.getConfig().getDouble("player.defaultTemperature");
 	}
 
 	@Override
-	public void stanley_lib$killByFreezing() {
+	public void stanley$killByFreezing() {
 		EntityPlayer player = (EntityPlayer) (Object) this;
 		player.sendTranslatedChatMessage("killed_by.freezing");
 		accessor.killedByFreezing.emit(null);
@@ -135,7 +132,7 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	}
 
 	@Override
-	public void stanley_lib$killByOverheating() {
+	public void stanley$killByOverheating() {
 		EntityPlayer player = (EntityPlayer) (Object) this;
 		player.sendTranslatedChatMessage("killed_by.overheating");
 		accessor.killedByOverheating.emit(null);
@@ -143,25 +140,25 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	}
 
 	@Override
-	public Block stanley_lib$getBlockUnderPlayer() {
+	public Block stanley$getBlockUnderPlayer() {
 		EntityPlayer player = (EntityPlayer) (Object) this;
 		return player.world.getBlock((int) player.x, (int) player.y - 2, (int) player.z);
 	}
 
 	@Override
-	public void stanley_lib$hurtByFreezing(int amount) {
+	public void stanley$hurtByFreezing(int amount) {
 		this.damageEntity(amount, CustomDamageTypes.FREEZING);
 		accessor.wasHurtFreezing.emit(null);
 	}
 
 	@Override
-	public void stanley_lib$hurtByOverheating(int amount) {
+	public void stanley$hurtByOverheating(int amount) {
 		this.damageEntity(amount, CustomDamageTypes.OVERHEATING);
 		accessor.wasHurtByOverheating.emit(null);
 	}
 
 
-	public void stanley_lib$setTemperatureState(PlayerTemperatureState state) {
+	public void stanley$setTemperatureState(PlayerTemperatureState state) {
 		this.temperature_state = state;
 
 		accessor.updatedTemperatureState.emit(state);
@@ -169,17 +166,17 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	}
 
 	@Override
-	public PlayerTemperatureState stanley_lib$getState() {
+	public PlayerTemperatureState stanley$getState() {
 		return this.temperature_state;
 	}
 
 	@Override
-	public void stanley_lib$updateTemperature() {
+	public void stanley$updateTemperature() {
 		temperatureManager.update();
 	}
 
 	@Override
-	public boolean[] hasLeatherArmor(EntityPlayer player) {
+	public boolean[] stanley$hasLeatherArmor(EntityPlayer player) {
 		ItemArmor helmet = getArmorFromSlot(player, 0);
 		ItemArmor chestplate = getArmorFromSlot(player, 1);
 		ItemArmor leggings = getArmorFromSlot(player, 2);
@@ -210,17 +207,17 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	}
 
 	@Override
-	public void stanley_lib$hurtByCold(int amount) {
+	public void stanley$hurtByCold(int amount) {
 		this.hurt(null, amount, CustomDamageTypes.COLD);
 	}
 
 	@Override
-	public void stanley_lib$hurtByHeat(int amount) {
+	public void stanley$hurtByHeat(int amount) {
 		this.hurt(null, amount, CustomDamageTypes.HEAT);
 	}
 
 	@Override
-	public Item stanley_lib$getItemInHand() {
+	public Item stanley$getItemInHand() {
 		ItemStack itemStack = getCurrentEquippedItem();
 		if (itemStack!=null)
 			return itemStack.getItem();
@@ -228,7 +225,7 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	}
 
 	@Override
-	public double stanley_lib$getPlayerPreviousTemperature() {
+	public double stanley$getPlayerPreviousTemperature() {
 		return prev_temperature;
 	}
 }

@@ -125,7 +125,7 @@ public class ThermometerComponent extends MovableHudComponent {
 
 		IStanleyPlayerEntity customPlayer = (IStanleyPlayerEntity) mc.thePlayer;
 
-		double targetTemperature = customPlayer.stanley_lib$getPlayerTemperature() / 100.0;
+		double targetTemperature = customPlayer.stanley$getPlayerTemperature() / 100.0;
 
 		if (targetTemperature>=1) {
 			targetTemperature = 1;
@@ -133,7 +133,7 @@ public class ThermometerComponent extends MovableHudComponent {
 			targetTemperature=0;
 		}
 
-		renderSprite(mc, gui, x, y, targetTemperature, customPlayer.stanley_lib$getState());
+		renderSprite(mc, gui, x, y, targetTemperature, customPlayer.stanley$getState());
 	}
 
 

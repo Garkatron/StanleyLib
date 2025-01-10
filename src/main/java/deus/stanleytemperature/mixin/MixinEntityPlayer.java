@@ -65,8 +65,6 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	public void afterUpdate(CallbackInfo ci) {
 		if (MOD_CONFIG.getConfig().getBoolean("temperatureManagement.activateTemperatureManagement"))
 			stanley$updateTemperature();
-
-		System.out.println(temperature_state);
 	}
 
 	@Inject(method = "hurt(Lnet/minecraft/core/entity/Entity;ILnet/minecraft/core/util/helper/DamageType;)Z", at = @At("RETURN"), remap = false)

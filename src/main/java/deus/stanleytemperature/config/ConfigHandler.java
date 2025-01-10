@@ -13,6 +13,10 @@ public class ConfigHandler {
 	static {
 		Toml toml = new Toml("StanleyLibConfig");
 
+		toml.addCategory("StartingIDs")
+			.addEntry("items", 26000)
+			.addEntry("blocks", 25000);
+
 		toml.addCategory("Gui")
 			.addEntry("temperatureBar","vertical or horizontal","horizontal")
 			.addEntry("temperatureBarCompact","small version",true);

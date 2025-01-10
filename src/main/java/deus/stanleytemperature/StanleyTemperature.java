@@ -6,11 +6,12 @@ import deus.stanleytemperature.overlay.HudManager;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import turniplabs.halplibe.util.ClientStartEntrypoint;
 import turniplabs.halplibe.util.GameStartEntrypoint;
 import turniplabs.halplibe.util.RecipeEntrypoint;
 
 
-public class StanleyTemperature implements ModInitializer, GameStartEntrypoint, RecipeEntrypoint {
+public class StanleyTemperature implements ModInitializer, RecipeEntrypoint, ClientStartEntrypoint {
 
     public static final String MOD_ID = "stanleytemperature";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
@@ -40,16 +41,15 @@ public class StanleyTemperature implements ModInitializer, GameStartEntrypoint, 
 
 	}
 
+
 	@Override
-	public void beforeGameStart() {
+	public void beforeClientStart() {
 
 	}
 
 	@Override
-	public void afterGameStart() {
+	public void afterClientStart() {
 		HudManager.init();
-
-
 	}
 
 	@Override

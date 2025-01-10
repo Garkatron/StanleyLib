@@ -1,5 +1,6 @@
 package deus.stanleytemperature.config;
 
+import deus.stanleytemperature.StanleyTemperature;
 import turniplabs.halplibe.util.TomlConfigHandler;
 import turniplabs.halplibe.util.toml.Toml;
 
@@ -32,7 +33,7 @@ public class ConfigHandler {
 			.addEntry("overworldRain", -0.5)
 			.addEntry("overworldSnow", -1.0)
 			.addEntry("overworldStorm", -0.1)
-			.addEntry("overworldWinterSnow", -1.3);
+			.addEntry("overworldClear", 0.0);
 
 		toml.addCategory("itemEffects")
 			.addEntry("itemAffectsTemperature", true)
@@ -46,8 +47,7 @@ public class ConfigHandler {
 
 		toml.addCategory("foodEffects")
 			.addEntry("foodAffectsTemperature", true)
-			.addEntry("soup", 1.8)
-			.addEntry("milk", -0.5);
+			.addEntry("bucketIcecream", -10.0);
 
 		toml.addCategory("lifeEffects")
 			.addEntry("lifeAffectsTemperature", true)
@@ -89,7 +89,7 @@ public class ConfigHandler {
 			.addEntry("winterTemperature", -0.05)
 			.addEntry("springTemperature", 0.0);
 
-		config = new TomlConfigHandler(null, MOD_ID, toml);
+		config = new TomlConfigHandler(StanleyTemperature.MOD_ID, toml);
 	}
 
 	private final TemperatureConfig temperatureConfig;

@@ -4,10 +4,11 @@ import deus.stanleytemperature.enums.PlayerTemperatureState;
 import deus.stanleytemperature.interfaces.IStanleyPlayerEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiIngame;
-import net.minecraft.client.gui.hud.Layout;
-import net.minecraft.client.gui.hud.MovableHudComponent;
-import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.client.gui.hud.HudIngame;
+import net.minecraft.client.gui.hud.component.HudComponentMovable;
+import net.minecraft.client.gui.hud.component.layout.Layout;
+import net.minecraft.client.gui.hud.component.layout.LayoutSnap;
+import net.minecraft.core.entity.player.Player;
 import net.minecraft.core.player.gamemode.Gamemode;
 import org.lwjgl.opengl.GL11;
 
@@ -15,7 +16,7 @@ import java.awt.*;
 
 import static deus.stanleytemperature.StanleyTemperature.MOD_CONFIG;
 
-public class ThermometerComponent extends MovableHudComponent {
+public class ThermometerComponent extends HudComponentMovable {
 
 	private int width = getTemperatureBarW();
 	private int height = getTemperatureBarH();
@@ -41,14 +42,14 @@ public class ThermometerComponent extends MovableHudComponent {
 	// assets/stanleylib/textures/gui/thermometer.png
 	// /assets/minecraft/textures/gui/icons.png
 
-	public ThermometerComponent(String key, int xSize, int ySize, Layout layout) {
+	public ThermometerComponent(String key, int xSize, int ySize, LayoutSnap layout) {
 		super(key, xSize, ySize, layout);
 	}
 
 	@Override
 	public boolean isVisible(Minecraft mc)
 	{
-		EntityPlayer player = mc.thePlayer;
+		Player player = mc.thePlayer;
 		if (player == null)
 			return true;
 
@@ -94,7 +95,7 @@ public class ThermometerComponent extends MovableHudComponent {
 				break;
 		}
 
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture(texture));
+		mc.textureManager.loadTexture(texture).bind();
 
 		int textureWidth = width;
 		int textureHeight = height;
@@ -119,7 +120,7 @@ public class ThermometerComponent extends MovableHudComponent {
 	}
 
 	@Override
-	public void render(Minecraft mc, GuiIngame gui, int xSizeScreen, int ySizeScreen, float partialTick) {
+	public void render(Minecraft mc, HudIngame gui, int xSizeScreen, int ySizeScreen, float partialTick) {
 		int x = this.getLayout().getComponentX(mc, this, xSizeScreen);
 		int y = this.getLayout().getComponentY(mc, this, ySizeScreen);
 
@@ -138,12 +139,12 @@ public class ThermometerComponent extends MovableHudComponent {
 
 
 	@Override
-	public void renderPreview(Minecraft mc, Gui gui, Layout layout, int xSizeScreen, int ySizeScreen) {
+	public void renderPreview(Minecraft minecraft, Gui gui, Layout layout, int i, int j) {
 		{
-			int x = layout.getComponentX(mc, this, xSizeScreen);
-			int y = layout.getComponentY(mc, this, ySizeScreen);
+			int x = layout.getComponentX(minecraft, this, i);
+			int y = layout.getComponentY(minecraft, this, j);
 
-			renderSprite(mc, gui, x, y, 0.5f, PlayerTemperatureState.NORMAL);
+			renderSprite(minecraft, gui, x, y, 0.5f, PlayerTemperatureState.NORMAL);
 		}
 	}
 	private void setColor(Color color)
@@ -190,11 +191,11 @@ public class ThermometerComponent extends MovableHudComponent {
 		String orientation = MOD_CONFIG.getConfig().getString("Gui.temperatureBar");
 		boolean isCompact = MOD_CONFIG.getConfig().getBoolean("Gui.temperatureBarCompact");
 		if ("horizontal".equals(orientation)) {
-			return isCompact ? "assets/stanleytemperature/textures/gui/c_thermometer.png" : "assets/stanleytemperature/textures/gui/thermometer.png";
+			return isCompact ? "/assets/stanleytemperature/textures/gui/c_thermometer.png" : "/assets/stanleytemperature/textures/gui/thermometer.png";
 		} else {
 
 			if ("vertical".equals(orientation)) {
-				return isCompact ? "assets/stanleytemperature/textures/gui/vc_thermometer.png" : "assets/stanleytemperature/textures/gui/v_thermometer.png";
+				return isCompact ? "/assets/stanleytemperature/textures/gui/vc_thermometer.png" : "/assets/stanleytemperature/textures/gui/v_thermometer.png";
 			} else {
 				return "";
 			}

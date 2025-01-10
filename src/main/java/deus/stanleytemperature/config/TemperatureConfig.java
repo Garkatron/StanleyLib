@@ -1,9 +1,14 @@
 package deus.stanleytemperature.config;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.block.material.Material;
+import net.minecraft.core.item.Item;
+import net.minecraft.core.item.ItemBucketIceCream;
+import net.minecraft.core.item.ItemFood;
+import net.minecraft.core.item.ItemSoup;
 import net.minecraft.core.world.biome.*;
 import net.minecraft.core.world.season.*;
-import net.minecraft.core.world.weather.Weather;
+import net.minecraft.core.world.weather.*;
 import turniplabs.halplibe.util.TomlConfigHandler;
 
 import java.util.HashMap;
@@ -11,23 +16,30 @@ import java.util.Map;
 
 public class TemperatureConfig {
 
-	private final Map<Weather, Double> weatherTemperatureAdjustments;
+	private final Map<Class<? extends Weather>, Double> weatherTemperatureAdjustments;
 	private final Map<Material, Double> blockTemperatureAdjustments;
 	private final Map<Class<? extends Season>, Double> seasonAdjustments;
 	private final Map<Class<? extends Biome>, Double> biomeAdjustments;
+	private final Map<Class<? extends ItemFood>, Double> foodAdjustments;
 
 	public TemperatureConfig(TomlConfigHandler configHandler) {
 		weatherTemperatureAdjustments = new HashMap<>();
 		blockTemperatureAdjustments = new HashMap<>();
 		seasonAdjustments = new HashMap<>();
 		biomeAdjustments = new HashMap<>();
+		foodAdjustments = new HashMap<>();
 
 		// Weather adjustments
 		if (configHandler.getBoolean("weatherEffects.weatherAffectsTemperature")) {
-			weatherTemperatureAdjustments.put(Weather.overworldRain, configHandler.getDouble("weatherEffects.overworldRain"));
-			weatherTemperatureAdjustments.put(Weather.overworldSnow, configHandler.getDouble("weatherEffects.overworldSnow"));
-			weatherTemperatureAdjustments.put(Weather.overworldStorm, configHandler.getDouble("weatherEffects.overworldStorm"));
-			weatherTemperatureAdjustments.put(Weather.overworldWinterSnow, configHandler.getDouble("weatherEffects.overworldWinterSnow"));
+			weatherTemperatureAdjustments.put(WeatherRain.class, configHandler.getDouble("weatherEffects.overworldRain"));
+			weatherTemperatureAdjustments.put(WeatherSnow.class, configHandler.getDouble("weatherEffects.overworldSnow"));
+			weatherTemperatureAdjustments.put(WeatherStorm.class, configHandler.getDouble("weatherEffects.overworldStorm"));
+			weatherTemperatureAdjustments.put(WeatherClear.class, configHandler.getDouble("weatherEffects.overworldClear"));
+			// Add more weather types if needed
+		}
+
+		if (configHandler.getBoolean("foodEffects.foodAffectsTemperature")) {
+			foodAdjustments.put(ItemBucketIceCream.class, configHandler.getDouble("foodEffects.bucketIcecream"));
 			// Add more weather types if needed
 		}
 
@@ -63,12 +75,16 @@ public class TemperatureConfig {
 		}
 	}
 
-	public Double getWeatherTemperatureAdjustment(Weather weather) {
+	public Double getWeatherTemperatureAdjustment(Class<? extends Weather> weather) {
 		return weatherTemperatureAdjustments.getOrDefault(weather, 0.0);
 	}
 
 	public Double getBlockTemperatureAdjustment(Material material) {
 		return blockTemperatureAdjustments.getOrDefault(material, 0.0);
+	}
+
+	public Double getFoodAdjustment(Class<? extends ItemFood> item) {
+		return foodAdjustments.getOrDefault(item, 0.0);
 	}
 
 	public Double getSeasonAdjustment(Season season) {

@@ -5,11 +5,13 @@ import deus.stanleytemperature.enums.PlayerTemperatureState;
 import deus.stanleytemperature.management.SignalAccessor;
 import deus.stanleytemperature.management.TemperatureManager;
 import deus.stanleytemperature.interfaces.IStanleyPlayerEntity;
+import net.minecraft.client.entity.player.PlayerLocal;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.entity.Entity;
-import net.minecraft.core.entity.monster.EntitySnowman;
-import net.minecraft.core.entity.player.EntityPlayer;
-import net.minecraft.core.entity.projectile.EntitySnowball;
+
+import net.minecraft.core.entity.monster.MobSnowman;
+import net.minecraft.core.entity.player.Player;
+import net.minecraft.core.entity.projectile.ProjectileSnowball;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemArmor;
 import net.minecraft.core.item.ItemStack;
@@ -22,12 +24,13 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Surrogate;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static deus.stanleytemperature.StanleyTemperature.MOD_CONFIG;
 
-@Mixin(EntityPlayer.class)
+@Mixin(Player.class)
 public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 
 	@Unique
@@ -62,15 +65,17 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	public void afterUpdate(CallbackInfo ci) {
 		if (MOD_CONFIG.getConfig().getBoolean("temperatureManagement.activateTemperatureManagement"))
 			stanley$updateTemperature();
+
+		System.out.println(temperature_state);
 	}
 
 	@Inject(method = "hurt(Lnet/minecraft/core/entity/Entity;ILnet/minecraft/core/util/helper/DamageType;)Z", at = @At("RETURN"), remap = false)
 	public void afterPlayerHurt(Entity attacker, int damage, DamageType type, CallbackInfoReturnable<Boolean> cir) {
 		if (MOD_CONFIG.getConfig().getBoolean("snowballEffects.snowballAffectsTemperature")) {
 			Object obj = attacker;
-			if (obj instanceof EntitySnowball && ((EntitySnowball) obj).owner != null) {
+			if (obj instanceof ProjectileSnowball && ((ProjectileSnowball) obj).owner != null) {
 				stanley$decreasePlayerTemperature(MOD_CONFIG.getConfig().getFloat("snowballEffect.snowballEffect"));
-			} else if (attacker instanceof EntitySnowman) {
+			} else if (attacker instanceof MobSnowman) {
 				stanley$decreasePlayerTemperature(MOD_CONFIG.getConfig().getFloat("snowballEffect.snowballEffect"));
 			}
 		}
@@ -125,7 +130,7 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 
 	@Override
 	public void stanley$killByFreezing() {
-		EntityPlayer player = (EntityPlayer) (Object) this;
+		Player player = (Player) (Object) this;
 		player.sendTranslatedChatMessage("killed_by.freezing");
 		accessor.killedByFreezing.emit(null);
 		this.killPlayer();
@@ -133,7 +138,7 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 
 	@Override
 	public void stanley$killByOverheating() {
-		EntityPlayer player = (EntityPlayer) (Object) this;
+		Player player = (Player) (Object) this;
 		player.sendTranslatedChatMessage("killed_by.overheating");
 		accessor.killedByOverheating.emit(null);
 		this.killPlayer();
@@ -141,7 +146,7 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 
 	@Override
 	public Block stanley$getBlockUnderPlayer() {
-		EntityPlayer player = (EntityPlayer) (Object) this;
+		Player player = (Player) (Object) this;
 		return player.world.getBlock((int) player.x, (int) player.y - 2, (int) player.z);
 	}
 
@@ -176,22 +181,22 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 	}
 
 	@Override
-	public boolean[] stanley$hasLeatherArmor(EntityPlayer player) {
+	public boolean[] stanley$hasLeatherArmor(Player player) {
 		ItemArmor helmet = getArmorFromSlot(player, 0);
 		ItemArmor chestplate = getArmorFromSlot(player, 1);
 		ItemArmor leggings = getArmorFromSlot(player, 2);
 		ItemArmor boots = getArmorFromSlot(player, 3);
 
-		boolean a = helmet != null && helmet.material == ArmorMaterial.LEATHER;
-		boolean b = chestplate != null && chestplate.material == ArmorMaterial.LEATHER;
-		boolean c = leggings != null && leggings.material == ArmorMaterial.LEATHER;
-		boolean d = boots != null && boots.material == ArmorMaterial.LEATHER;
+		boolean a = helmet != null && helmet.getArmorMaterial() == ArmorMaterial.LEATHER;
+		boolean b = chestplate != null && chestplate.getArmorMaterial() == ArmorMaterial.LEATHER;
+		boolean c = leggings != null && leggings.getArmorMaterial() == ArmorMaterial.LEATHER;
+		boolean d = boots != null && boots.getArmorMaterial() == ArmorMaterial.LEATHER;
 
 		return new boolean[]{a, b, c, d};
 	}
 
 	@Unique
-	private ItemArmor getArmorFromSlot(EntityPlayer player, int slot_index) {
+	private ItemArmor getArmorFromSlot(Player player, int slot_index) {
 		if (slot_index < 0 || slot_index >= player.inventory.armorInventory.length) {
 			return null;
 		}

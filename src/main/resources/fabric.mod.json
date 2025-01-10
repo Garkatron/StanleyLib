@@ -17,14 +17,14 @@
   "license": "CC0-1.0",
 
   "environment": "*",
-  "entrypoints": {
-    "main": [
-			"deus.stanleytemperature.StanleyTemperature"
-    ],
-		"beforeGameStart": [
+	"entrypoints": {
+		"main": [
 			"deus.stanleytemperature.StanleyTemperature"
 		],
-		"afterGameStart": [
+		"beforeClientStart": [
+			"deus.stanleytemperature.StanleyTemperature"
+		],
+		"afterClientStart": [
 			"deus.stanleytemperature.StanleyTemperature"
 		],
 		"recipesReady": [

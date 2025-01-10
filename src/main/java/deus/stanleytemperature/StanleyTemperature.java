@@ -35,7 +35,7 @@ public class StanleyTemperature implements ModInitializer, GameStartEntrypoint, 
 	@Override
     public void onInitialize() {
 
-		LOGGER.info("StanleyLib initialized.");
+		LOGGER.info("StanleyTemperature initialized.");
 
 
 	}

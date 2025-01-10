@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "id": "stanleylib",
+  "id": "stanleytemperature",
   "version": "${version}",
 
-  "name": "stanleylib",
-  "description": "This mod aims to help new BTA modders.",
+  "name": "stanleytemperature",
+  "description": "Enhance your gameplay with the intense challenge of managing heat!",
   "authors": [
     "@Garkatron"
   ],
@@ -19,22 +19,22 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-			"deus.stanleylib.StanleyLib"
+			"deus.stanleytemperature.StanleyTemperature"
     ],
 		"beforeGameStart": [
-			"deus.stanleylib.StanleyLib"
+			"deus.stanleytemperature.StanleyTemperature"
 		],
 		"afterGameStart": [
-			"deus.stanleylib.StanleyLib"
+			"deus.stanleytemperature.StanleyTemperature"
 		],
 		"recipesReady": [
-			"deus.stanleylib.StanleyLib"
+			"deus.stanleytemperature.StanleyTemperature"
 		]
 	},
 	"custom": {
 		"loom:injected_interfaces": {
 
-			"net/minecraft/core/entity/player": ["deus/stanleylib/interfaces/mixin/IStanleyPlayerEntity","deus/stanleylib/interfaces/mixin/IPlayerEntity"]
+			"net/minecraft/core/entity/player": ["deus/stanleytemperature/interfaces/mixin/IStanleyPlayerEntity","deus/stanleytemperature/interfaces/mixin/IPlayerEntity"]
 		}
 	},
   "mixins": [

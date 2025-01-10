@@ -190,11 +190,11 @@ public class ThermometerComponent extends MovableHudComponent {
 		String orientation = MOD_CONFIG.getConfig().getString("Gui.temperatureBar");
 		boolean isCompact = MOD_CONFIG.getConfig().getBoolean("Gui.temperatureBarCompact");
 		if ("horizontal".equals(orientation)) {
-			return isCompact ? "assets/stanleylib/textures/gui/c_thermometer.png" : "assets/stanleylib/textures/gui/thermometer.png";
+			return isCompact ? "assets/stanleytemperature/textures/gui/c_thermometer.png" : "assets/stanleytemperature/textures/gui/thermometer.png";
 		} else {
 
 			if ("vertical".equals(orientation)) {
-				return isCompact ? "assets/stanleylib/textures/gui/vc_thermometer.png" : "assets/stanleylib/textures/gui/v_thermometer.png";
+				return isCompact ? "assets/stanleytemperature/textures/gui/vc_thermometer.png" : "assets/stanleytemperature/textures/gui/v_thermometer.png";
 			} else {
 				return "";
 			}

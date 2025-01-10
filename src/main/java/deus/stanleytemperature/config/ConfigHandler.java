@@ -29,21 +29,24 @@ public class ConfigHandler {
 
 		toml.addCategory("weatherEffects")
 			.addEntry("weatherAffectsTemperature", true)
-			.addEntry("overworldRain", -0.1)
-			.addEntry("overworldSnow", -0.2)
+			.addEntry("overworldRain", -0.5)
+			.addEntry("overworldSnow", -1.0)
 			.addEntry("overworldStorm", -0.1)
-			.addEntry("overworldWinterSnow", -0.3);
+			.addEntry("overworldWinterSnow", -1.3);
 
 		toml.addCategory("itemEffects")
 			.addEntry("itemAffectsTemperature", true)
-			.addEntry("torch", 0.1)
+			.addEntry("torch", 0.5)
 			.addEntry("redstoneTorch", 0.05)
-			.addEntry("lavaBucket", 0.25)
-			.addEntry("netherCoal", 0.25);
+			.addEntry("lavaBucket", 2.0)
+			.addEntry("netherCoal", 1.2)
+			.addEntry("permafrostBlock", -3.5)
+			.addEntry("bucketIcecream", -2.0)
+			.addEntry("iceBlock", -2.0);
 
 		toml.addCategory("foodEffects")
 			.addEntry("foodAffectsTemperature", true)
-			.addEntry("soup", 0.8)
+			.addEntry("soup", 1.8)
 			.addEntry("milk", -0.5);
 
 		toml.addCategory("lifeEffects")
@@ -67,7 +70,7 @@ public class ConfigHandler {
 			.addEntry("biomeAffectsTemperature", true)
 			.addEntry("plains", 0.0)
 			.addEntry("taiga", -0.1)
-			.addEntry("nether", 5.0)
+			.addEntry("nether", 3.0)
 			.addEntry("birchForest", 0.0)
 			.addEntry("caatinga", -0.01)
 			.addEntry("borealForest", 0.0)

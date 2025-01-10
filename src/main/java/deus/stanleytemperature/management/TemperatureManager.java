@@ -142,9 +142,20 @@ public class TemperatureManager {
 
 					totalAdjustment += MOD_CONFIG.getConfig().getDouble("itemEffects.redstoneTorch");
 
+				} else if (item == Block.permafrost.asItem()) {
+
+					totalAdjustment += MOD_CONFIG.getConfig().getDouble("itemEffects.permafrostBlock");
+
+				} else if (item == Item.bucketIcecream) {
+
+					totalAdjustment += MOD_CONFIG.getConfig().getDouble("itemEffects.bucketIcecream");
+
+				} else if (item == Block.ice.asItem()) {
+
+					totalAdjustment += MOD_CONFIG.getConfig().getDouble("itemEffects.iceBlock");
+
 				}
 			}
-
 
 			if (totalAdjustment != 0.0f) {
 				adjustPlayerTemperature(totalAdjustment);

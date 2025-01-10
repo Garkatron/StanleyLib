@@ -1,8 +1,8 @@
-package deus.stanleylib;
+package deus.stanleytemperature;
 
-import deus.stanleylib.config.ConfigHandler;
+import deus.stanleytemperature.config.ConfigHandler;
 
-import deus.stanleylib.overlay.HudManager;
+import deus.stanleytemperature.overlay.HudManager;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +10,9 @@ import turniplabs.halplibe.util.GameStartEntrypoint;
 import turniplabs.halplibe.util.RecipeEntrypoint;
 
 
-public class StanleyLib implements ModInitializer, GameStartEntrypoint, RecipeEntrypoint {
+public class StanleyTemperature implements ModInitializer, GameStartEntrypoint, RecipeEntrypoint {
 
-    public static final String MOD_ID = "stanleylib";
+    public static final String MOD_ID = "stanleytemperature";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static ConfigHandler MOD_CONFIG = new ConfigHandler();
 

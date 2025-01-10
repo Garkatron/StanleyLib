@@ -1,7 +1,7 @@
-package deus.stanleylib.overlay;
+package deus.stanleytemperature.overlay;
 
-import deus.stanleylib.enums.PlayerTemperatureState;
-import deus.stanleylib.interfaces.IStanleyPlayerEntity;
+import deus.stanleytemperature.enums.PlayerTemperatureState;
+import deus.stanleytemperature.interfaces.IStanleyPlayerEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngame;
@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-import static deus.stanleylib.StanleyLib.MOD_CONFIG;
+import static deus.stanleytemperature.StanleyTemperature.MOD_CONFIG;
 
 public class ThermometerComponent extends MovableHudComponent {
 

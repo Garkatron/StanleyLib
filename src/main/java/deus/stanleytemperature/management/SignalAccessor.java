@@ -1,7 +1,7 @@
-package deus.stanleylib.management;
+package deus.stanleytemperature.management;
 
-import deus.godotsignalsystem.core.Signal;
-import deus.stanleylib.enums.PlayerTemperatureState;
+import deus.stanleytemperature.enums.PlayerTemperatureState;
+import gssl.Signal;
 
 /**
  * Manages various signals related to temperature and player states.

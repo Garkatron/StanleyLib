@@ -1,8 +1,7 @@
-package deus.stanleylib.interfaces;
+package deus.stanleytemperature.interfaces;
 
-import deus.stanleylib.enums.PlayerTemperatureState;
+import deus.stanleytemperature.enums.PlayerTemperatureState;
 import net.minecraft.core.block.Block;
-import net.minecraft.core.item.Item;
 
 public interface IStanleyPlayerEntity extends IPlayerEntity {
 	/**

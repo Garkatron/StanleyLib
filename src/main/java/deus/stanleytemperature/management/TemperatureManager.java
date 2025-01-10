@@ -1,18 +1,16 @@
-package deus.stanleylib.management;
+package deus.stanleytemperature.management;
 
-import deus.stanleylib.enums.PlayerTemperatureState;
-import deus.stanleylib.interfaces.IPlayerEntity;
-import deus.stanleylib.interfaces.IStanleyPlayerEntity;
+import deus.stanleytemperature.enums.PlayerTemperatureState;
+import deus.stanleytemperature.interfaces.IPlayerEntity;
+import deus.stanleytemperature.interfaces.IStanleyPlayerEntity;
 import net.minecraft.core.block.Block;
-import net.minecraft.core.block.BlockTorch;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.world.biome.Biome;
 import net.minecraft.core.world.season.Season;
 import net.minecraft.core.world.weather.Weather;
-import org.lwjgl.Sys;
 
-import static deus.stanleylib.StanleyLib.*;
+import static deus.stanleytemperature.StanleyTemperature.*;
 
 public class TemperatureManager {
 

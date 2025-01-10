@@ -1,9 +1,8 @@
-package deus.stanleylib.overlay;
+package deus.stanleytemperature.overlay;
 
-import deus.stanleylib.StanleyLib;
+import deus.stanleytemperature.StanleyTemperature;
 import net.minecraft.client.gui.hud.*; // Asegúrate de que las importaciones sean correctas
 
-import static deus.stanleylib.StanleyLib.MOD_CONFIG;
 
 public class HudManager {
 	private static final HudComponent thermometer = HudComponents.register(new ThermometerComponent(
@@ -15,7 +14,7 @@ public class HudManager {
 
 	public static void init() {
 
-		StanleyLib.LOGGER.debug("Registering HUD components");
+		StanleyTemperature.LOGGER.debug("Registering HUD components");
 	}
 
 

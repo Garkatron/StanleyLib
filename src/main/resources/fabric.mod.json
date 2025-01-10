@@ -38,7 +38,7 @@
 		}
 	},
   "mixins": [
-		"stanleylib.mixins.json"
+    "stanleytemperature.mixins.json"
   ],
 
 	"depends": {

@@ -1,6 +1,6 @@
-package deus.stanleylib.network;
+package deus.stanleytemperature.network;
 
-import deus.stanleylib.enums.PlayerTemperatureState;
+import deus.stanleytemperature.enums.PlayerTemperatureState;
 import net.minecraft.core.net.handler.NetHandler;
 import net.minecraft.core.net.packet.Packet;
 

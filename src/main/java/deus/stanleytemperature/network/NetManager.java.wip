@@ -1,4 +1,4 @@
-package deus.stanleylib.network;
+package deus.stanleytemperature.network;
 
 import turniplabs.halplibe.helper.NetworkHelper;
 

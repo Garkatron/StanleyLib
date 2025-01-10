@@ -1,4 +1,4 @@
-package deus.stanleylib.network;
+package deus.stanleytemperature.network;
 
 import net.minecraft.core.net.handler.NetHandler;
 import net.minecraft.core.net.packet.Packet;

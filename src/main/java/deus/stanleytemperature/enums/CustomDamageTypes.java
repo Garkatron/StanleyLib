@@ -1,4 +1,4 @@
-package deus.stanleylib.enums;
+package deus.stanleytemperature.enums;
 
 import net.minecraft.core.util.helper.DamageType;
 

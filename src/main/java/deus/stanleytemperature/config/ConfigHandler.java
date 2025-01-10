@@ -1,9 +1,9 @@
-package deus.stanleylib.config;
+package deus.stanleytemperature.config;
 
 import turniplabs.halplibe.util.TomlConfigHandler;
 import turniplabs.halplibe.util.toml.Toml;
 
-import static deus.stanleylib.StanleyLib.MOD_ID;
+import static deus.stanleytemperature.StanleyTemperature.MOD_ID;
 
 public class ConfigHandler {
 
@@ -13,7 +13,7 @@ public class ConfigHandler {
 		Toml toml = new Toml("StanleyLibConfig");
 
 		toml.addCategory("Gui")
-			.addEntry("temperatureBar","vertical or horizontal","vertical")
+			.addEntry("temperatureBar","vertical or horizontal","horizontal")
 			.addEntry("temperatureBarCompact","small version",true);
 
 		toml.addCategory("temperatureManagement")

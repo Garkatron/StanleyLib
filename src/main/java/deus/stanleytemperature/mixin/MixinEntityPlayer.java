@@ -1,10 +1,10 @@
-package deus.stanleylib.mixin;
+package deus.stanleytemperature.mixin;
 
-import deus.stanleylib.enums.CustomDamageTypes;
-import deus.stanleylib.enums.PlayerTemperatureState;
-import deus.stanleylib.management.SignalAccessor;
-import deus.stanleylib.management.TemperatureManager;
-import deus.stanleylib.interfaces.IStanleyPlayerEntity;
+import deus.stanleytemperature.enums.CustomDamageTypes;
+import deus.stanleytemperature.enums.PlayerTemperatureState;
+import deus.stanleytemperature.management.SignalAccessor;
+import deus.stanleytemperature.management.TemperatureManager;
+import deus.stanleytemperature.interfaces.IStanleyPlayerEntity;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.monster.EntitySnowman;
@@ -16,7 +16,6 @@ import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.item.material.ArmorMaterial;
 import net.minecraft.core.util.helper.DamageType;
 import net.minecraft.core.world.World;
-import org.lwjgl.Sys;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -25,10 +24,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
-import static deus.stanleylib.StanleyLib.MOD_CONFIG;
+import static deus.stanleytemperature.StanleyTemperature.MOD_CONFIG;
 
 @Mixin(EntityPlayer.class)
 public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {

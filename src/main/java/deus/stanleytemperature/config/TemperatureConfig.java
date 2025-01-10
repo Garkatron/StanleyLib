@@ -1,4 +1,4 @@
-package deus.stanleylib.config;
+package deus.stanleytemperature.config;
 
 import net.minecraft.core.block.material.Material;
 import net.minecraft.core.world.biome.*;

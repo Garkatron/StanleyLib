@@ -1,4 +1,4 @@
-package deus.stanleylib.network;
+package deus.stanleytemperature.network;
 
 public interface INetHandler {
 	void handleTemperaturePacket(PacketSendTemperature packet);

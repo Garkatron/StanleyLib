@@ -33,14 +33,14 @@ public class ConfigHandler {
 		;
 
 		toml.addCategory("weatherEffects")
-			.addEntry("weatherAffectsTemperature", true)
+			.addEntry("enabled", true)
 			.addEntry("overworldRain", -0.5)
 			.addEntry("overworldSnow", -1.0)
 			.addEntry("overworldStorm", -0.1)
 			.addEntry("overworldClear", 0.0);
 
 		toml.addCategory("itemEffects")
-			.addEntry("itemAffectsTemperature", true)
+			.addEntry("enabled", true)
 			.addEntry("torch", 0.5)
 			.addEntry("redstoneTorch", 0.05)
 			.addEntry("lavaBucket", 2.0)
@@ -49,17 +49,22 @@ public class ConfigHandler {
 			.addEntry("bucketIcecream", -2.0)
 			.addEntry("iceBlock", -2.0);
 
-		toml.addCategory("foodEffects")
-			.addEntry("foodAffectsTemperature", true)
+		toml.addCategory("vanillaFoodEffects")
+			.addEntry("enabled", true)
 			.addEntry("bucketIcecream", -10.0);
 
+		toml.addCategory("foodEffects")
+			.addEntry("enabled", true)
+			.addEntry("iceCubes", -5.0)
+			.addEntry("netherrackMeatBalls", 5.0);
+
 		toml.addCategory("lifeEffects")
-			.addEntry("lifeAffectsTemperature", true)
+			.addEntry("enabled", true)
 			.addEntry("applyEffectEveryXHearts", 2)
 			.addEntry("temperatureResistancePenalizationPerHeart", -1.0);
 
 		toml.addCategory("blockEffects")
-			.addEntry("playerOverBlockAffectsTemperature", true)
+			.addEntry("enabled", true)
 			.addEntry("snowBlock", -0.05)
 			.addEntry("waterBlock", -0.05)
 			.addEntry("fire", -2.00)
@@ -67,11 +72,11 @@ public class ConfigHandler {
 			.addEntry("iceBlock", -0.03);
 
 		toml.addCategory("snowballEffects")
-			.addEntry("snowballAffectsTemperature", true)
+			.addEntry("enabled", true)
 			.addEntry("snowballEffect", 0.01);
 
 		toml.addCategory("biomeEffects")
-			.addEntry("biomeAffectsTemperature", true)
+			.addEntry("enabled", true)
 			.addEntry("plains", 0.0)
 			.addEntry("taiga", -0.1)
 			.addEntry("nether", 3.0)
@@ -83,11 +88,11 @@ public class ConfigHandler {
 			.addEntry("forest", -0.015);
 
 		toml.addCategory("leatherProtection")
-			.addEntry("leatherProtectionPercentage", 0.01)
-			.addEntry("leatherProtectsTemperature", true);
+			.addEntry("enabled", true)
+			.addEntry("leatherProtectionPercentage", 0.01);
 
 		toml.addCategory("seasonEffects")
-			.addEntry("seasonAffectsTemperature", true)
+			.addEntry("enabled", true)
 			.addEntry("summerTemperature", 0.04)
 			.addEntry("fallTemperature", 0.0)
 			.addEntry("winterTemperature", -0.05)

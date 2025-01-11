@@ -6,7 +6,7 @@ import turniplabs.halplibe.helper.ItemBuilder;
 
 public class StanleyItems {
 
-	public static ItemFood iceCubes;
+	public static StanleyItemFood iceCubes;
 	public static ItemFood netherrackMeatBalls;
 
 	private static int currentBlockId = StanleyTemperature.MOD_CONFIG.getConfig().getInt("StartingIDs.blocks");
@@ -27,26 +27,30 @@ public class StanleyItems {
 
 		iceCubes = genericItemBuilder
 			.setIcon(StanleyTemperature.MOD_ID + ":item/iceCubes")
-			.build(new ItemFood(
+			.build(new StanleyItemFood(
 				"iceCubes",
 				StanleyTemperature.MOD_ID + ":item/ice_cubes",
 				newItemId(),
 				1,
 				1,
 				false,
-				DEFAULT_STACK_SIZE
+				DEFAULT_STACK_SIZE,
+				StanleyTemperature.MOD_CONFIG.getTemperatureConfig().getFoodValues("iceCubes"),
+				StanleyFoodType.COLD
 			));
 
 		netherrackMeatBalls = genericItemBuilder
 			.setIcon(StanleyTemperature.MOD_ID + ":item/netherrackMeatBalls")
-			.build(new ItemFood(
+			.build(new StanleyItemFood(
 				"netherrackMeatBalls",
 				StanleyTemperature.MOD_ID + ":item/netherrack_meat_balls",
 				newItemId(),
 				1,
 				1,
 				false,
-				DEFAULT_STACK_SIZE
+				DEFAULT_STACK_SIZE,
+				StanleyTemperature.MOD_CONFIG.getTemperatureConfig().getFoodValues("netherrackMeatBalls"),
+				StanleyFoodType.HOT
 			));
 	}
 }

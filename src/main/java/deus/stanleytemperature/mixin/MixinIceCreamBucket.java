@@ -36,9 +36,7 @@ public class MixinIceCreamBucket {
 			entityplayer.eatFood((ItemBucketIceCream) (Object) this);
 			playSound(world, entityplayer, soundEffect);
 			cir.setReturnValue(new ItemStack(Items.BUCKET));
-		} else if (state.equals(PlayerTemperatureState.HOT) || state.equals(PlayerTemperatureState.OVERHEATING)) {
-			playSound(world, entityplayer, soundEffect);
-			cir.setReturnValue(new ItemStack(Items.BUCKET));
+
 		} else {
 			playSound(world, entityplayer, soundEffect);
 			cir.setReturnValue(new ItemStack(Items.BUCKET));

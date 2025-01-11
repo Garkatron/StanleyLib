@@ -5,6 +5,7 @@ import deus.stanleytemperature.config.ConfigHandler;
 import deus.stanleytemperature.items.StanleyItems;
 import deus.stanleytemperature.overlay.HudManager;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.core.data.registry.Registries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import turniplabs.halplibe.util.ClientStartEntrypoint;
@@ -55,11 +56,13 @@ public class StanleyTemperature implements ModInitializer, RecipeEntrypoint, Cli
 
 	@Override
 	public void onRecipesReady() {
+		StanleyRecipes.initialize();
 
 	}
 
 	@Override
 	public void initNamespaces() {
-
+		new StanleyRecipeRegistries();
+		Registries.RECIPES.register("stanley", StanleyRecipeRegistries.STANLEY);
 	}
 }

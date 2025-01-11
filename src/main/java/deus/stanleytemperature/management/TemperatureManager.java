@@ -1,6 +1,5 @@
 package deus.stanleytemperature.management;
 
-import deus.stanleytemperature.StanleyTemperature;
 import deus.stanleytemperature.enums.PlayerTemperatureState;
 import deus.stanleytemperature.interfaces.IMinecraft;
 import deus.stanleytemperature.interfaces.IPlayerEntity;
@@ -38,11 +37,10 @@ public class TemperatureManager {
 		sent_messages[2] = false;
 		sent_messages[3] = false;
 
-		if (MOD_CONFIG.getConfig().getBoolean("foodEffects.foodAffectsTemperature")) {
+		if (MOD_CONFIG.getConfig().getBoolean("vanillaFoodEffects.enabled")) {
 			((IMinecraft)mc).stanley$getOnCunsumeItemSignal().connect((r, item)-> {
-				double v = MOD_CONFIG.getTemperatureConfig().getFoodAdjustment(item.getClass());
+				double v = MOD_CONFIG.getTemperatureConfig().getVanillaFoodValues(item.getClass());
 
-				System.out.println(item.getClass().getSimpleName());
 				if (v > 0) {
 					custom_player.stanley$increasePlayerTemperature(v);
 				} else {
@@ -76,7 +74,7 @@ public class TemperatureManager {
 		Double totalAdjustment = 0.0;
 
 		// Adjust temperature based on the health
-		if (MOD_CONFIG.getConfig().getBoolean("lifeEffects.lifeAffectsTemperature")) {
+		if (MOD_CONFIG.getConfig().getBoolean("lifeEffects.enabled")) {
 			// Get the absolute difference between the current health and maximum health
 			int healthDifference = player.getMaxHealth() - player.getHealth();
 
@@ -106,31 +104,33 @@ public class TemperatureManager {
 			ticks_remaining = 0;
 
 			// Adjust temperature based on current weather
-			if (MOD_CONFIG.getConfig().getBoolean("weatherEffects.weatherAffectsTemperature")) {
-				totalAdjustment += MOD_CONFIG.getTemperatureConfig().getWeatherTemperatureAdjustment(current_weather.getClass());
+			if (MOD_CONFIG.getConfig().getBoolean("weatherEffects.enabled")) {
+				if (current_weather!=null) {
+					totalAdjustment += MOD_CONFIG.getTemperatureConfig().getWeatherValues(current_weather.getClass());
+				}
 			}
 
 			// Adjust temperature based on the block player is standing on
-			if (MOD_CONFIG.getConfig().getBoolean("blockEffects.playerOverBlockAffectsTemperature")) {
+			if (MOD_CONFIG.getConfig().getBoolean("blockEffects.enabled")) {
 				if (under_player_block != null) {
-					totalAdjustment += MOD_CONFIG.getTemperatureConfig().getBlockTemperatureAdjustment(under_player_block.getMaterial());
+					totalAdjustment += MOD_CONFIG.getTemperatureConfig().getBlockValues(under_player_block.getMaterial());
 				}
 			}
 
 			// Adjust temperature based on the current season
-			if (MOD_CONFIG.getConfig().getBoolean("seasonEffects.seasonAffectsTemperature")) {
+			if (MOD_CONFIG.getConfig().getBoolean("seasonEffects.enabled")) {
 				if (current_season != null) {
-					totalAdjustment += MOD_CONFIG.getTemperatureConfig().getSeasonAdjustment(current_season);
+					totalAdjustment += MOD_CONFIG.getTemperatureConfig().getSeasonValues(current_season);
 				}
 			}
 
 			// Adjust temperature based on the current biome
-			if (MOD_CONFIG.getConfig().getBoolean("biomeEffects.biomeAffectsTemperature")) {
-				totalAdjustment += MOD_CONFIG.getTemperatureConfig().getBiomeAdjustment(current_biome_at_block);
+			if (MOD_CONFIG.getConfig().getBoolean("biomeEffects.enabled")) {
+				totalAdjustment += MOD_CONFIG.getTemperatureConfig().getBiomeValues(current_biome_at_block);
 			}
 
 			// Adjust temperature based on leather armor protection
-			if (MOD_CONFIG.getConfig().getBoolean("leatherProtection.leatherProtectsTemperature")) {
+			if (MOD_CONFIG.getConfig().getBoolean("leatherProtection.enabled")) {
 				int leatherArmorCount = 0;
 				for (boolean leatherArmor : leather_armors) {
 					if (leatherArmor) {
@@ -144,7 +144,7 @@ public class TemperatureManager {
 			// Adjust temperature based on equipped item
 			Item item = custom_player.stanley$getItemInHand();
 			if (
-				MOD_CONFIG.getConfig().getBoolean("itemEffects.itemAffectsTemperature") &&
+				MOD_CONFIG.getConfig().getBoolean("itemEffects.enabled") &&
 					item != null
 			) {
 				if (item == Items.BUCKET_LAVA) {

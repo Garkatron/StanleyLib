@@ -4,7 +4,9 @@
   "package": "deus.stanleytemperature.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MixinEntityPlayer"
+    "MixinEntityPlayer",
+    "MixinIceCreamBucket",
+    "MixinMinecraft"
   ],
   "client": [
   ],

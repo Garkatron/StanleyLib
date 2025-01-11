@@ -2,6 +2,7 @@ package deus.stanleytemperature;
 
 import deus.stanleytemperature.config.ConfigHandler;
 
+import deus.stanleytemperature.items.StanleyItems;
 import deus.stanleytemperature.overlay.HudManager;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
@@ -36,6 +37,7 @@ public class StanleyTemperature implements ModInitializer, GameStartEntrypoint, 
     public void onInitialize() {
 
 		LOGGER.info("StanleyTemperature initialized.");
+		StanleyItems.initialize();
 
 
 	}

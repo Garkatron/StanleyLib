@@ -206,14 +206,15 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 		return null;
 	}
 
+
 	@Override
 	public void stanley$hurtByCold(int amount) {
-		this.hurt(null, amount, CustomDamageTypes.COLD);
+		this.damageEntity(amount, CustomDamageTypes.COLD);
 	}
 
 	@Override
 	public void stanley$hurtByHeat(int amount) {
-		this.hurt(null, amount, CustomDamageTypes.HEAT);
+		this.damageEntity(amount, CustomDamageTypes.HEAT);
 	}
 
 	@Override

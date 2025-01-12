@@ -57,6 +57,7 @@ public class StanleyTemperature implements ModInitializer, GameStartEntrypoint, 
 	@Override
 	public void onRecipesReady() {
 
+		StanleyRecipes.initialize();
 	}
 
 	@Override

@@ -15,5 +15,13 @@ public class StanleyRecipes {
 			.addInput('p', Block.permafrost.asItem())
 			.create("StanleyRecipeIceCubes", StanleyItems.iceCubes.getDefaultStack());
 
+		RecipeBuilder.Shaped(StanleyTemperature.MOD_ID)
+			.setShape(
+				"   ",
+				"ppp",
+				"   ")
+			.addInput('p', Block.netherrack.asItem())
+			.create("StanleyRecipeIceCubes", StanleyItems.netherrackMeatBalls.getDefaultStack());
+
 	}
 }

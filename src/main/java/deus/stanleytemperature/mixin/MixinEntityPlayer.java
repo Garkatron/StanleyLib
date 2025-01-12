@@ -66,7 +66,7 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 
 	@Inject(method = "hurt(Lnet/minecraft/core/entity/Entity;ILnet/minecraft/core/util/helper/DamageType;)Z", at = @At("RETURN"), remap = false)
 	public void afterPlayerHurt(Entity attacker, int damage, DamageType type, CallbackInfoReturnable<Boolean> cir) {
-		if (MOD_CONFIG.getConfig().getBoolean("snowballEffects.snowballAffectsTemperature")) {
+		if (MOD_CONFIG.getConfig().getBoolean("snowballEffects.enabled")) {
 			Object obj = attacker;
 			if (obj instanceof EntitySnowball && ((EntitySnowball) obj).owner != null) {
 				stanley$decreasePlayerTemperature(MOD_CONFIG.getConfig().getFloat("snowballEffect.snowballEffect"));

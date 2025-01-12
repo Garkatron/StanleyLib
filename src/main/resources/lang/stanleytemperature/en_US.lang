@@ -4,4 +4,5 @@ damagetype.cold = Cold
 damagetype.heat = Heat
 killed_by.freezing = You were frozen solid! Guess you should've packed a warmer coat.
 killed_by.overheating = You overheated! Next time, try staying out of the sauna.
-
+item.stanleytemperature.iceCubes.name = Ice Cubes
+item.stanleytemperature.netherrackMeatBalls.name = Netherrack Meat Balls

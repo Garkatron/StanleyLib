@@ -21,7 +21,7 @@ public class StanleyRecipes {
 				"ppp",
 				"   ")
 			.addInput('p', Block.netherrack.asItem())
-			.create("StanleyRecipeIceCubes", StanleyItems.netherrackMeatBalls.getDefaultStack());
+			.create("StanleyRecipeNetherrackMeatBalls", StanleyItems.netherrackMeatBalls.getDefaultStack());
 
 	}
 }

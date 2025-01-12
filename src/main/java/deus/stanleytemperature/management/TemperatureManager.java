@@ -9,6 +9,7 @@ import net.minecraft.core.block.Block;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.item.Item;
 
+import net.minecraft.core.player.gamemode.Gamemode;
 import net.minecraft.core.world.biome.Biome;
 import net.minecraft.core.world.season.Season;
 import net.minecraft.core.world.weather.Weather;
@@ -54,10 +55,11 @@ public class TemperatureManager {
 	}
 
 	public void update() {
+		EntityPlayer player = (EntityPlayer) this.custom_player;
+
 		IPlayerEntity iplayer = custom_player;
 
 		Block under_player_block = iplayer.stanley$getBlockUnderPlayer();
-		EntityPlayer player = (EntityPlayer) this.custom_player;
 
 		assert player.world != null;
 		Biome current_biome_at_block = player.world.getBlockBiome((int) player.x, (int) player.y, (int) player.z);

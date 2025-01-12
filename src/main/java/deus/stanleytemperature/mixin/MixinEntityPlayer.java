@@ -14,6 +14,7 @@ import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemArmor;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.item.material.ArmorMaterial;
+import net.minecraft.core.player.gamemode.Gamemode;
 import net.minecraft.core.util.helper.DamageType;
 import net.minecraft.core.world.World;
 import org.spongepowered.asm.mixin.Final;
@@ -53,6 +54,9 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 
 	@Shadow public abstract ItemStack getCurrentEquippedItem();
 
+	@Shadow
+	public Gamemode gamemode;
+
 	@Inject(method = "<init>(Lnet/minecraft/core/world/World;)V", at = @At("RETURN"), remap = false)
 	public void afterConstructor(World world, CallbackInfo ci) {
 		//stanley_lib$registerObserver(DEFAULT_OBSERVER);
@@ -60,8 +64,11 @@ public abstract class MixinEntityPlayer implements IStanleyPlayerEntity {
 
 	@Inject(method = "tick()V", at = @At("RETURN"), remap = false)
 	public void afterUpdate(CallbackInfo ci) {
-		if (MOD_CONFIG.getConfig().getBoolean("temperatureManagement.activateTemperatureManagement"))
-			stanley$updateTemperature();
+		if (!gamemode.equals(Gamemode.creative)) {
+			if (MOD_CONFIG.getConfig().getBoolean("temperatureManagement.activateTemperatureManagement"))
+				stanley$updateTemperature();
+		}
+
 	}
 
 	@Inject(method = "hurt(Lnet/minecraft/core/entity/Entity;ILnet/minecraft/core/util/helper/DamageType;)Z", at = @At("RETURN"), remap = false)

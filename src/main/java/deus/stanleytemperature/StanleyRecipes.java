@@ -1,6 +1,7 @@
 package deus.stanleytemperature;
 
 import deus.stanleytemperature.items.StanleyItems;
+import net.minecraft.core.block.Block;
 import net.minecraft.core.block.Blocks;
 import net.minecraft.core.item.Item;
 import turniplabs.halplibe.helper.RecipeBuilder;
@@ -15,6 +16,15 @@ public class StanleyRecipes {
 				"   ")
 			.addInput('p', Blocks.PERMAFROST.asItem())
 			.create("StanleyRecipeIceCubes", StanleyItems.iceCubes.getDefaultStack());
+
+		RecipeBuilder.Shaped(StanleyTemperature.MOD_ID)
+			.setShape(
+				"   ",
+				"ppp",
+				"   ")
+			.addInput('p', Blocks.NETHERRACK.asItem())
+			.create("StanleyRecipeNetherrackMeatBalls", StanleyItems.netherrackMeatBalls.getDefaultStack());
+
 
 	}
 }
